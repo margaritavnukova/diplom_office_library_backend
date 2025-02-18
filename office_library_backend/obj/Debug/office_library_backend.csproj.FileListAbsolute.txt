@@ -1,0 +1,2 @@
+C:\Users\Vitra\diplom\office_library_backend\office_library_backend\obj\Debug\office_library_backend.csproj.AssemblyReference.cache
+C:\Users\Vitra\diplom\office_library_backend\office_library_backend\obj\Debug\office_library_backend.csproj.CoreCompileInputs.cache
