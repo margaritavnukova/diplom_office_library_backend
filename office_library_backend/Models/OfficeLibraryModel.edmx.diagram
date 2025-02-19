@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="97cebd05fe6e47669fb36e82b9d0df51" Name="Diagram1">
+        <EntityTypeShape EntityType="OfficeLibraryDataModel.Author" Width="1.5" PointX="1.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="OfficeLibraryDataModel.Book" Width="1.5" PointX="1.375" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OfficeLibraryDataModel.Genre_Dictionary" Width="1.5" PointX="3.25" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OfficeLibraryDataModel.MyRole_Dictionary" Width="1.5" PointX="5.625" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="OfficeLibraryDataModel.MyUser" Width="1.5" PointX="5.75" PointY="0.875" IsExpanded="true" />
+        <AssociationConnector Association="OfficeLibraryDataModel.FK__Book__Author__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="OfficeLibraryDataModel.FK__Book__Genre__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="OfficeLibraryDataModel.FK__MyUser__Role__3F466844" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="OfficeLibraryDataModel.UserBookHistory" Width="1.5" PointX="3.625" PointY="0.875" />
+        <AssociationConnector Association="OfficeLibraryDataModel.FK__UserBookH__BookI__5AEE82B9" />
+        <AssociationConnector Association="OfficeLibraryDataModel.FK__UserBookH__UserI__5BE2A6F2" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

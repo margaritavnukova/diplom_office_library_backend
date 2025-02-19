@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using office_library_backend.Models.Repositories;
-using office_library_backend.Models.MyModels;
+using office_library_backend.Models;
 using office_library_backend.Models.MyDto;
 
 namespace office_library_backend.Controllers
@@ -21,19 +21,21 @@ namespace office_library_backend.Controllers
 
         public IEnumerable<BooksDto> GetAllBooks()
         {
-            return repository.GetAll().Select(p => new BooksDto()
+            return repository.GetAll().Select(b => new BooksDto()
             {
-                Id = p.Id,
-                Name = p.Name,
-                destination = p.destination,
+                Id = b.Id,
+                Title = b.Title,
+                Author = b.Author,
+                Genre = b.Genre,
+                Year = b.Year,
                 //Ships = p.BooksToShips.Select(s => s.ShipID.Value.ToString()).ToList(),
             });
         }
 
 
-        public Books GetBook(int id)
+        public Book GetBook(int id)
         {
-            Books item = repository.Get(id);
+            Book item = repository.Get(id);
             if (item == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -41,27 +43,27 @@ namespace office_library_backend.Controllers
             return item;
         }
 
-        public IEnumerable<Books> GetBooksByDestination(string d)
+        public IEnumerable<Book> GetBooksByTitle(string t)
         {
             return repository.GetAll().Where(
-                p => string.Equals(p.destination, d, StringComparison.OrdinalIgnoreCase));
+                b => string.Equals(b.Title, t, StringComparison.OrdinalIgnoreCase));
         }
 
-        public HttpResponseMessage PostBook(Books cruise)
+        public HttpResponseMessage PostBook(Book book)
         {
-            if (cruise.Name != null)
-                cruise = repository.Add(cruise);
-            var response = Request.CreateResponse<Books>(HttpStatusCode.Created, cruise);
+            if (book.Title != null)
+                book = repository.Add(book);
+            var response = Request.CreateResponse<Book>(HttpStatusCode.Created, book);
 
-            string uri = Url.Link("DefaultApi", new { id = cruise.Id });
+            string uri = Url.Link("DefaultApi", new { id = book.Id });
             response.Headers.Location = new Uri(uri);
             return response;
         }
 
-        public void PutBooks(int id, Books cruise)
+        public void PutBooks(int id, BooksDto book)
         {
-            cruise.Id = id;
-            if (!repository.Update(cruise))
+            book.Id = id;
+            if (!repository.Update(book))
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
@@ -123,21 +125,21 @@ namespace office_library_backend.Controllers
 //                p => string.Equals(p.destination, d, StringComparison.OrdinalIgnoreCase));
 //        }
 
-//        public HttpResponseMessage PostCruise(Cruises cruise)
+//        public HttpResponseMessage PostCruise(Cruises book)
 //        {
-//            if (cruise.Name != null)
-//                cruise = repository.Add(cruise);
-//            var response = Request.CreateResponse<Cruises>(HttpStatusCode.Created, cruise);
+//            if (book.Name != null)
+//                book = repository.Add(book);
+//            var response = Request.CreateResponse<Cruises>(HttpStatusCode.Created, book);
 
-//            string uri = Url.Link("DefaultApi", new { id = cruise.Id });
+//            string uri = Url.Link("DefaultApi", new { id = book.Id });
 //            response.Headers.Location = new Uri(uri);
 //            return response;
 //        }
 
-//        public void PutCruises(int id, Cruises cruise)
+//        public void PutCruises(int id, Cruises book)
 //        {
-//            cruise.Id = id;
-//            if (!repository.Update(cruise))
+//            book.Id = id;
+//            if (!repository.Update(book))
 //            {
 //                throw new HttpResponseException(HttpStatusCode.NotFound);
 //            }

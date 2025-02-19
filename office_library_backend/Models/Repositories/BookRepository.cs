@@ -4,69 +4,64 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.DynamicData;
-using office_library_backend.Models.MyModels;
+using office_library_backend.Models;
+using office_library_backend.Models.MyDto;
 
 namespace office_library_backend.Models.Repositories
 {
     public class BookRepository : IBookRepository
     {
         private int _nextId = 1;
-        //private Vnukova_ISRPOEntities1 db = new Vnukova_ISRPOEntities1();
+        private OfficeLibraryDataEntities db = new OfficeLibraryDataEntities();
 
-        public List<Books> Initialize()
+        public List<Book> Initialize()
         {
-            var query = from Book in db.Books.ToList() select Book;
+            var query = from Book in db.Book.ToList() select Book;
             return query.ToList();
         }
 
-        public Books Add(Books item)
+        public Book Add(Book item)
         {
-            //var cruises = Initialize();
             if (item == null)
                 throw new ArgumentNullException();
             item.Id = _nextId++;
-            db.Books.Add(item);
+            db.Book.Add(item);
             db.SaveChanges();
-            //cruises.Add(item);
             return item;
         }
 
-        public Books Get(int id)
+        public Book Get(int id)
         {
-            var cruises = Initialize();
-            return cruises.Find(p => p.Id == id);
+            var books = Initialize();
+            return books.Find(p => p.Id == id);
         }
 
-        public IEnumerable<Books> GetAll()
+        public IEnumerable<Book> GetAll()
         {
-            var cruises = Initialize();
-            return cruises;
+            var books = Initialize();
+            return books;
         }
 
         public void Remove(int id)
         {
-            var itemToDelete = db.Books.Where(p => p.Id == id).FirstOrDefault();
+            var itemToDelete = db.Book.Where(b => b.Id == id).FirstOrDefault();
 
-            db.Books.Remove(itemToDelete);
-            //db.Entry(itemToDelete).State = EntityState.Modified;
+            db.Book.Remove(itemToDelete);
             db.SaveChanges();
         }
 
-        public bool Update(Books item)
+        public bool Update(BooksDto item)
         {
-            var cruises = Initialize();
+            var books = Initialize();
             if (item == null)
                 throw new ArgumentNullException();
-            int index = cruises.FindIndex(p => p.Id == item.Id);
+            int index = books.FindIndex(p => p.Id == item.Id);
             if (index == -1)
                 return false;
 
-            //cruises.RemoveAt(index);
-            //cruises.Add(item);
-
-            var itemToDelete = db.Books.Where(p => p.Id == item.Id).FirstOrDefault();
-            itemToDelete.Name = item.Name;
-            itemToDelete.destination = item.destination;
+            var itemToDelete = db.Book.Where(p => p.Id == item.Id).FirstOrDefault();
+            itemToDelete.Title = item.Title;
+            itemToDelete.Author = item.Author;
             db.Entry(itemToDelete).State = EntityState.Modified;
             db.SaveChanges();
             return true;

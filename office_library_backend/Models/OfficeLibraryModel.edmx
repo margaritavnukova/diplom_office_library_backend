@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище OfficeLibraryDataModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="LifeTime" Type="nvarchar" MaxLength="10" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Author" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Genre" Type="int" />
+          <Property Name="Year" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Genre_Dictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="MyRole_Dictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MyUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Role" Type="int" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "C:\USERS\VITRA\DIPLOM\OFFICE_LIBRARY_BACKEND\OFFICE_LIBRARY_BACKEND\APP_DATA\OFFICELIBRARYDATA.MDF.dbo.UserBookHistory" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="UserBookHistory">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="DateTaken" Type="datetime" />
+          <Property Name="DateReturned" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__Book__Author__4CA06362">
+          <End Role="Author" Type="Self.Author" Multiplicity="1" />
+          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Book__Genre__4D94879B">
+          <End Role="Genre_Dictionary" Type="Self.Genre_Dictionary" Multiplicity="0..1" />
+          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre_Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="Genre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MyUser__Role__60A75C0F">
+          <End Role="MyRole_Dictionary" Type="Self.MyRole_Dictionary" Multiplicity="0..1" />
+          <End Role="MyUser" Type="Self.MyUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MyRole_Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MyUser">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserBookH__BookI__5AEE82B9">
+          <End Role="Book" Type="Self.Book" Multiplicity="1" />
+          <End Role="UserBookHistory" Type="Self.UserBookHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserBookHistory">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserBookH__UserI__5FB337D6">
+          <End Role="MyUser" Type="Self.MyUser" Multiplicity="1" />
+          <End Role="UserBookHistory" Type="Self.UserBookHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MyUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserBookHistory">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище OfficeLibraryDataModelContainer">
+          <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genre_Dictionary" EntityType="Self.Genre_Dictionary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MyRole_Dictionary" EntityType="Self.MyRole_Dictionary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MyUser" EntityType="Self.MyUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserBookHistory" EntityType="Self.UserBookHistory" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UserBookHistory].[UserId] AS [UserId], 
+    [UserBookHistory].[BookId] AS [BookId], 
+    [UserBookHistory].[DateTaken] AS [DateTaken], 
+    [UserBookHistory].[DateReturned] AS [DateReturned]
+    FROM [dbo].[UserBookHistory] AS [UserBookHistory]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Book__Author__4CA06362" Association="Self.FK__Book__Author__4CA06362">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Book__Genre__4D94879B" Association="Self.FK__Book__Genre__4D94879B">
+            <End Role="Genre_Dictionary" EntitySet="Genre_Dictionary" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MyUser__Role__60A75C0F" Association="Self.FK__MyUser__Role__60A75C0F">
+            <End Role="MyRole_Dictionary" EntitySet="MyRole_Dictionary" />
+            <End Role="MyUser" EntitySet="MyUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserBookH__BookI__5AEE82B9" Association="Self.FK__UserBookH__BookI__5AEE82B9">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="UserBookHistory" EntitySet="UserBookHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserBookH__UserI__5FB337D6" Association="Self.FK__UserBookH__UserI__5FB337D6">
+            <End Role="MyUser" EntitySet="MyUser" />
+            <End Role="UserBookHistory" EntitySet="UserBookHistory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OfficeLibraryDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LifeTime" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Book" Relationship="Self.FK__Book__Author__4CA06362" FromRole="Author" ToRole="Book" />
+        </EntityType>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Author" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Genre" Type="Int32" />
+          <Property Name="Year" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Author1" Relationship="Self.FK__Book__Author__4CA06362" FromRole="Book" ToRole="Author" />
+          <NavigationProperty Name="Genre_Dictionary" Relationship="Self.FK__Book__Genre__4D94879B" FromRole="Book" ToRole="Genre_Dictionary" />
+          <NavigationProperty Name="UserBookHistory" Relationship="OfficeLibraryDataModel.FK__UserBookH__BookI__5AEE82B9" FromRole="Book" ToRole="UserBookHistory" />
+        </EntityType>
+        <EntityType Name="Genre_Dictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Book" Relationship="Self.FK__Book__Genre__4D94879B" FromRole="Genre_Dictionary" ToRole="Book" />
+        </EntityType>
+        <EntityType Name="MyRole_Dictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MyUser" Relationship="Self.FK__MyUser__Role__3F466844" FromRole="MyRole_Dictionary" ToRole="MyUser" />
+        </EntityType>
+        <EntityType Name="MyUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Role" Type="Int32" />
+          <NavigationProperty Name="MyRole_Dictionary" Relationship="Self.FK__MyUser__Role__3F466844" FromRole="MyUser" ToRole="MyRole_Dictionary" />
+          <NavigationProperty Name="UserBookHistory" Relationship="OfficeLibraryDataModel.FK__UserBookH__UserI__5BE2A6F2" FromRole="MyUser" ToRole="UserBookHistory" />
+          <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK__Book__Author__4CA06362">
+          <End Role="Author" Type="Self.Author" Multiplicity="1" />
+          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Book__Genre__4D94879B">
+          <End Role="Genre_Dictionary" Type="Self.Genre_Dictionary" Multiplicity="0..1" />
+          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre_Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="Genre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MyUser__Role__3F466844">
+          <End Role="MyRole_Dictionary" Type="Self.MyRole_Dictionary" Multiplicity="0..1" />
+          <End Role="MyUser" Type="Self.MyUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MyRole_Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MyUser">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OfficeLibraryDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Author" EntityType="Self.Author" />
+          <EntitySet Name="Book" EntityType="Self.Book" />
+          <EntitySet Name="Genre_Dictionary" EntityType="Self.Genre_Dictionary" />
+          <EntitySet Name="MyRole_Dictionary" EntityType="Self.MyRole_Dictionary" />
+          <EntitySet Name="MyUser" EntityType="Self.MyUser" />
+          <AssociationSet Name="FK__Book__Author__4CA06362" Association="Self.FK__Book__Author__4CA06362">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Book__Genre__4D94879B" Association="Self.FK__Book__Genre__4D94879B">
+            <End Role="Genre_Dictionary" EntitySet="Genre_Dictionary" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MyUser__Role__3F466844" Association="Self.FK__MyUser__Role__3F466844">
+            <End Role="MyRole_Dictionary" EntitySet="MyRole_Dictionary" />
+            <End Role="MyUser" EntitySet="MyUser" />
+          </AssociationSet>
+          <EntitySet Name="UserBookHistory" EntityType="OfficeLibraryDataModel.UserBookHistory" />
+          <AssociationSet Name="FK__UserBookH__BookI__5AEE82B9" Association="OfficeLibraryDataModel.FK__UserBookH__BookI__5AEE82B9">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="UserBookHistory" EntitySet="UserBookHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserBookH__UserI__5BE2A6F2" Association="OfficeLibraryDataModel.FK__UserBookH__UserI__5BE2A6F2">
+            <End Role="MyUser" EntitySet="MyUser" />
+            <End Role="UserBookHistory" EntitySet="UserBookHistory" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="UserBookHistory">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="DateTaken" Type="DateTime" Precision="3" />
+          <Property Name="DateReturned" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Book" Relationship="OfficeLibraryDataModel.FK__UserBookH__BookI__5AEE82B9" FromRole="UserBookHistory" ToRole="Book" />
+          <NavigationProperty Name="MyUser" Relationship="OfficeLibraryDataModel.FK__UserBookH__UserI__5BE2A6F2" FromRole="UserBookHistory" ToRole="MyUser" />
+        </EntityType>
+        <Association Name="FK__UserBookH__BookI__5AEE82B9">
+          <End Type="OfficeLibraryDataModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="OfficeLibraryDataModel.UserBookHistory" Role="UserBookHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserBookHistory">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserBookH__UserI__5BE2A6F2">
+          <End Type="OfficeLibraryDataModel.MyUser" Role="MyUser" Multiplicity="1" />
+          <End Type="OfficeLibraryDataModel.UserBookHistory" Role="UserBookHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MyUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserBookHistory">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище OfficeLibraryDataModelContainer" CdmEntityContainer="OfficeLibraryDataEntities">
+          <EntitySetMapping Name="Author">
+            <EntityTypeMapping TypeName="OfficeLibraryDataModel.Author">
+              <MappingFragment StoreEntitySet="Author">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LifeTime" ColumnName="LifeTime" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Book">
+            <EntityTypeMapping TypeName="OfficeLibraryDataModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genre_Dictionary">
+            <EntityTypeMapping TypeName="OfficeLibraryDataModel.Genre_Dictionary">
+              <MappingFragment StoreEntitySet="Genre_Dictionary">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MyRole_Dictionary">
+            <EntityTypeMapping TypeName="OfficeLibraryDataModel.MyRole_Dictionary">
+              <MappingFragment StoreEntitySet="MyRole_Dictionary">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MyUser">
+            <EntityTypeMapping TypeName="OfficeLibraryDataModel.MyUser">
+              <MappingFragment StoreEntitySet="MyUser">
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserBookHistory">
+            <EntityTypeMapping TypeName="OfficeLibraryDataModel.UserBookHistory">
+              <MappingFragment StoreEntitySet="UserBookHistory">
+                <ScalarProperty Name="DateReturned" ColumnName="DateReturned" />
+                <ScalarProperty Name="DateTaken" ColumnName="DateTaken" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
