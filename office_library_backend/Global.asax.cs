@@ -1,3 +1,4 @@
+using office_library_backend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,9 @@ namespace office_library_backend
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // Я добавила создание ролей.
+            ApplicationUser.CreateRolesAndUsers();
         }
     }
 }

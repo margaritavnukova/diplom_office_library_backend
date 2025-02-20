@@ -89,12 +89,12 @@ namespace office_library_backend.Controllers
             // Сбои при входе не приводят к блокированию учетной записи
             // Чтобы ошибки при вводе пароля инициировали блокирование учетной записи, замените на shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            string roleName = ""; //get name
+            //string roleName = "Manager"; //get name
 
             switch (result)
             {
                 case SignInStatus.Success:
-                    Roles.AddUserToRole(model.Email, roleName);
+                    //Roles.AddUserToRole(model.Email, roleName);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");

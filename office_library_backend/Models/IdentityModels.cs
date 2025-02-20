@@ -16,6 +16,33 @@ namespace office_library_backend.Models
             // Здесь добавьте утверждения пользователя
             return userIdentity;
         }
+
+        // I addded
+        public static void CreateRolesAndUsers()
+        {
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext("DefualtConnection")));
+
+            // Создание роли Admin
+            if (!roleManager.RoleExists("Admin"))
+            {
+                var role = new IdentityRole("Admin");
+                roleManager.Create(role);
+            }
+
+            // Создание роли Manager
+            if (!roleManager.RoleExists("Manager"))
+            {
+                var role = new IdentityRole("Manager");
+                roleManager.Create(role);
+            }
+
+            // Создание роли User
+            if (!roleManager.RoleExists("User"))
+            {
+                var role = new IdentityRole("User");
+                roleManager.Create(role);
+            }
+        }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -25,9 +52,20 @@ namespace office_library_backend.Models
         {
         }
 
+        // я добавила переменную ConnectionName в функцию
+        public ApplicationDbContext(string ConnectionName)
+            : base(ConnectionName, throwIfV1Schema: false)
+        {
+        }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
+        }
+
+        public static ApplicationDbContext Create(string ConnectionName)
+        {
+            return new ApplicationDbContext(ConnectionName);
         }
     }
 }
