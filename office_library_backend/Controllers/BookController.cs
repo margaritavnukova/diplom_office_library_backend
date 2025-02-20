@@ -15,7 +15,7 @@ namespace office_library_backend.Controllers
 {
     public class BookController : ApiController
     {
-        //static string IP = "57660";
+        //static string IP = "44319";
 
         static readonly IBookRepository repository = new BookRepository();
 
@@ -67,7 +67,6 @@ namespace office_library_backend.Controllers
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
-
         }
 
         public void DeleteBook(int id)

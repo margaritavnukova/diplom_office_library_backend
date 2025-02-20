@@ -26,6 +26,7 @@ namespace office_library_backend
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Account/Login"),
+                LogoutPath = new PathString("/Account/Logoff"),
                 Provider = new CookieAuthenticationProvider
                 {
                     // Позволяет приложению проверять метку безопасности при входе пользователя.
