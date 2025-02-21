@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Web.Security;
 using office_library_backend.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace office_library_backend.Controllers
 {
@@ -18,7 +19,8 @@ namespace office_library_backend.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private OfficeLibraryDataEntities db = new OfficeLibraryDataEntities();
+        private OfficeLibraryDataEntities OfficeDb = new OfficeLibraryDataEntities();
+        private Entities DefualtDb = new Entities();
 
         public AccountController()
         {
@@ -92,7 +94,7 @@ namespace office_library_backend.Controllers
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
 
             // Get role name
-            var user = db.MyUser.Where(u => u.Email == model.Email).FirstOrDefault();
+            var user = OfficeDb.MyUser.Where(u => u.Email == model.Email).FirstOrDefault();
             string roleName = String.Empty;
             roleName = user != null ?
                  user.MyRole_Dictionary.Name 
@@ -102,8 +104,14 @@ namespace office_library_backend.Controllers
             {
                 case SignInStatus.Success:
                     if (roleName != null)
-                        // зддесь ошибка
-                        Roles.AddUserToRole(model.Email, roleName);
+                    // зддесь ошибка
+                    {
+                        var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                        var defaultUser = DefualtDb.AspNetUsers.Where(u => u.Email == model.Email).FirstOrDefault();
+
+                        await userManager.AddToRoleAsync(defaultUser.Id, roleName);
+                        //Roles.AddUserToRole(model.Email, roleName);
+                    }
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");

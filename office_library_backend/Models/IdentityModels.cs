@@ -48,7 +48,7 @@ namespace office_library_backend.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("LocalSqlServer", throwIfV1Schema: false)
+            : base("DefaultConnection", throwIfV1Schema: false)
             //: base("DefaultConnection", throwIfV1Schema: false)
         {
         }
