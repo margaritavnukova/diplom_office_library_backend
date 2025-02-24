@@ -12,5 +12,6 @@ namespace office_library_backend.Models.MyDto
         public string Title { get; set; }
         public Nullable<int> Genre { get; set; }
         public Nullable<System.DateTime> Year { get; set; }
+        public List<UsersDto> Readers { get; set; } = new List<UsersDto>();
     }
 }

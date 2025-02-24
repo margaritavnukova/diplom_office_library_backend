@@ -35,6 +35,7 @@ namespace office_library_backend.Controllers
                 Author = b.Author,
                 Genre = b.Genre,
                 Year = b.Year,
+                //Readers = b.UserBookHistory.Select(u => new UsersDto() { Id = u.UserId }).ToList(),
                 //Ships = p.BooksToShips.Select(s => s.ShipID.Value.ToString()).ToList(),
             });
         }

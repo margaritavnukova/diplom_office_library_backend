@@ -14,12 +14,12 @@ namespace office_library_backend.Models
     
     public partial class UserBookHistory
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int BookId { get; set; }
         public Nullable<System.DateTime> DateTaken { get; set; }
         public Nullable<System.DateTime> DateReturned { get; set; }
     
+        public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual Book Book { get; set; }
-        public virtual MyUser MyUser { get; set; }
     }
 }
