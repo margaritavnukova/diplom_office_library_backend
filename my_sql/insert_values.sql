@@ -23,10 +23,10 @@ INSERT INTO MyRole_Dictionary (Name) VALUES
 (N'Менеджер');
 
 INSERT INTO MyUser (Email, Password, Role) VALUES
-('user1@mail.com', '0000', 2),
-('user2@mail.com', '0000', 2),
-('admin@mail.com', '0000', 1),
-('manager@mail.com', '0000', 3);
+('user1@mail.com', 'Az!000', 3),
+('user2@mail.com', 'Az!000', 3),
+('admin@mail.com', 'Az!000', 1),
+('manager@mail.com', 'Az!000', 2);
 
 
 INSERT INTO Book (Author, Title, Genre, Year) VALUES

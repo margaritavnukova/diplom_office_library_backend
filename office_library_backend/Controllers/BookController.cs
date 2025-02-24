@@ -10,14 +10,21 @@ using System.Web.Mvc;
 using office_library_backend.Models.Repositories;
 using office_library_backend.Models;
 using office_library_backend.Models.MyDto;
+using System.ComponentModel.DataAnnotations;
 
 namespace office_library_backend.Controllers
 {
+    //[System.Web.Http.Authorize(Roles = "Admin")]
     public class BookController : ApiController
     {
         //static string IP = "44319";
 
         static readonly IBookRepository repository = new BookRepository();
+
+        //public IHttpActionResult Get()
+        //{
+        //    return Ok("Protected resourse");
+        //}
 
         public IEnumerable<BooksDto> GetAllBooks()
         {

@@ -211,10 +211,10 @@
       <DependentUpon>DefaultConnectionModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Author.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>DefaultConnectionModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Book.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>DefaultConnectionModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C__MigrationHistory.cs">
       <DependentUpon>DefaultConnectionModel.tt</DependentUpon>
@@ -235,36 +235,21 @@
       <DependentUpon>DefaultConnectionModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Genre_Dictionary.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>DefaultConnectionModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MyDto\BooksDto.cs" />
     <Compile Include="Models\MyRole_Dictionary.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>DefaultConnectionModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MyUser.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OfficeLibraryModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OfficeLibraryModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OfficeLibraryModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OfficeLibraryModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
+      <DependentUpon>DefaultConnectionModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Repositories\BookRepository.cs" />
     <Compile Include="Models\Repositories\IBookRepository.cs" />
     <Compile Include="Models\UserBookHistory.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>DefaultConnectionModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -303,29 +288,12 @@
       <DependentUpon>DefaultConnectionModel.edmx</DependentUpon>
       <LastGenOutput>DefaultConnectionModel.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\OfficeLibraryModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>OfficeLibraryModel.Context.cs</LastGenOutput>
-      <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\OfficeLibraryModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
-      <LastGenOutput>OfficeLibraryModel.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\OfficeLibraryModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>OfficeLibraryModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\OfficeLibraryModel.edmx.diagram">
-      <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
-    </Content>
     <EntityDeploy Include="Models\DefaultConnectionModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DefaultConnectionModel.Designer.cs</LastGenOutput>

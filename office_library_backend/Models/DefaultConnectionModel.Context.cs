@@ -30,5 +30,11 @@ namespace office_library_backend.Models
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+        public virtual DbSet<Author> Author { get; set; }
+        public virtual DbSet<Book> Book { get; set; }
+        public virtual DbSet<Genre_Dictionary> Genre_Dictionary { get; set; }
+        public virtual DbSet<MyRole_Dictionary> MyRole_Dictionary { get; set; }
+        public virtual DbSet<MyUser> MyUser { get; set; }
+        public virtual DbSet<UserBookHistory> UserBookHistory { get; set; }
     }
 }

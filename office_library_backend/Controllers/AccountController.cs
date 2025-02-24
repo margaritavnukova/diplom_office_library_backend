@@ -19,9 +19,7 @@ namespace office_library_backend.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private OfficeLibraryDataEntities OfficeDb = new OfficeLibraryDataEntities();
         private Entities DefualtDb = new Entities();
-
         public AccountController()
         {
         }
@@ -89,29 +87,27 @@ namespace office_library_backend.Controllers
                 return View(model);
             }
 
-            // Сбои при входе не приводят к блокированию учетной записи
-            // Чтобы ошибки при вводе пароля инициировали блокирование учетной записи, замените на shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
 
             // Get role name
-            var user = OfficeDb.MyUser.Where(u => u.Email == model.Email).FirstOrDefault();
-            string roleName = String.Empty;
-            roleName = user != null ?
-                 user.MyRole_Dictionary.Name 
-                 : "User";
+            //var user = OfficeDb.MyUser.Where(u => u.Email == model.Email).FirstOrDefault();
+            //string roleName = String.Empty;
+            //roleName = user != null ?
+            //     user.MyRole_Dictionary.Name 
+            //     : "User";
 
             switch (result)
             {
                 case SignInStatus.Success:
-                    if (roleName != null)
-                    // зддесь ошибка
-                    {
-                        var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-                        var defaultUser = DefualtDb.AspNetUsers.Where(u => u.Email == model.Email).FirstOrDefault();
+                    // Нужно было чтобы добавить пользовательниц к ролям. Больше не нужно
+                    //if (roleName != null)
+                    //{
+                    //    var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                    //    var defaultUser = DefualtDb.AspNetUsers.Where(u => u.Email == model.Email).FirstOrDefault();
 
-                        await userManager.AddToRoleAsync(defaultUser.Id, roleName);
-                        //Roles.AddUserToRole(model.Email, roleName);
-                    }
+                    //    await userManager.AddToRoleAsync(defaultUser.Id, roleName);
+                    //    //Roles.AddUserToRole(model.Email, roleName);
+                    //}
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -189,7 +185,11 @@ namespace office_library_backend.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
+                    // добавляю всех новых в роль Юзер
+                    var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                    await userManager.AddToRoleAsync(user.Id, "User");
+
                     // Дополнительные сведения о включении подтверждения учетной записи и сброса пароля см. на странице https://go.microsoft.com/fwlink/?LinkID=320771.
                     // Отправка сообщения электронной почты с этой ссылкой
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -425,7 +425,7 @@ namespace office_library_backend.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //

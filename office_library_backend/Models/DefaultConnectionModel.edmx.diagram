@@ -13,6 +13,17 @@
         <AssociationConnector Association="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="Model.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Model.Author" Width="1.5" PointX="3.375" PointY="10.125" />
+        <EntityTypeShape EntityType="Model.Book" Width="1.5" PointX="5.625" PointY="7" />
+        <EntityTypeShape EntityType="Model.Genre_Dictionary" Width="1.5" PointX="3.375" PointY="7.25" />
+        <EntityTypeShape EntityType="Model.MyRole_Dictionary" Width="1.5" PointX="7.375" PointY="1.25" />
+        <EntityTypeShape EntityType="Model.MyUser" Width="1.5" PointX="9.625" PointY="0.875" />
+        <AssociationConnector Association="Model.FK__Book__Author__52593CB8" />
+        <AssociationConnector Association="Model.FK__Book__Genre__534D60F1" />
+        <AssociationConnector Association="Model.FK__MyUser__Role__4F7CD00D" />
+        <EntityTypeShape EntityType="Model.UserBookHistory" Width="1.5" PointX="11.875" PointY="4.125" />
+        <AssociationConnector Association="Model.FK__UserBookH__BookI__571DF1D5" />
+        <AssociationConnector Association="Model.FK__UserBookH__UserI__5812160E" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

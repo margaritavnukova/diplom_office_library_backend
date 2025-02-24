@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -66,6 +66,122 @@
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="LifeTime" Type="nvarchar" MaxLength="10" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Author" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Genre" Type="int" />
+          <Property Name="Year" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Genre_Dictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="MyRole_Dictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MyUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FuulName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Role" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "aspnet-office_library_backend-20250218111328.dbo.UserBookHistory" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="UserBookHistory">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="DateTaken" Type="datetime" />
+          <Property Name="DateReturned" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__Book__Author__52593CB8">
+          <End Role="Author" Type="Self.Author" Multiplicity="1" />
+          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Book__Genre__534D60F1">
+          <End Role="Genre_Dictionary" Type="Self.Genre_Dictionary" Multiplicity="0..1" />
+          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre_Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="Genre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MyUser__Role__4F7CD00D">
+          <End Role="MyRole_Dictionary" Type="Self.MyRole_Dictionary" Multiplicity="1" />
+          <End Role="MyUser" Type="Self.MyUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MyRole_Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MyUser">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserBookH__BookI__571DF1D5">
+          <End Role="Book" Type="Self.Book" Multiplicity="1" />
+          <End Role="UserBookHistory" Type="Self.UserBookHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserBookHistory">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserBookH__UserI__5812160E">
+          <End Role="MyUser" Type="Self.MyUser" Multiplicity="1" />
+          <End Role="UserBookHistory" Type="Self.UserBookHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MyUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserBookHistory">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -129,6 +245,39 @@
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genre_Dictionary" EntityType="Self.Genre_Dictionary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MyRole_Dictionary" EntityType="Self.MyRole_Dictionary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MyUser" EntityType="Self.MyUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserBookHistory" EntityType="Self.UserBookHistory" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UserBookHistory].[UserId] AS [UserId], 
+    [UserBookHistory].[BookId] AS [BookId], 
+    [UserBookHistory].[DateTaken] AS [DateTaken], 
+    [UserBookHistory].[DateReturned] AS [DateReturned]
+    FROM [dbo].[UserBookHistory] AS [UserBookHistory]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Book__Author__52593CB8" Association="Self.FK__Book__Author__52593CB8">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Book__Genre__534D60F1" Association="Self.FK__Book__Genre__534D60F1">
+            <End Role="Genre_Dictionary" EntitySet="Genre_Dictionary" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MyUser__Role__4F7CD00D" Association="Self.FK__MyUser__Role__4F7CD00D">
+            <End Role="MyRole_Dictionary" EntitySet="MyRole_Dictionary" />
+            <End Role="MyUser" EntitySet="MyUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserBookH__BookI__571DF1D5" Association="Self.FK__UserBookH__BookI__571DF1D5">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="UserBookHistory" EntitySet="UserBookHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserBookH__UserI__5812160E" Association="Self.FK__UserBookH__UserI__5812160E">
+            <End Role="MyUser" EntitySet="MyUser" />
+            <End Role="UserBookHistory" EntitySet="UserBookHistory" />
+          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -146,8 +295,7 @@
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -260,7 +408,157 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="Author" EntityType="Model.Author" />
+          <EntitySet Name="Book" EntityType="Model.Book" />
+          <EntitySet Name="Genre_Dictionary" EntityType="Model.Genre_Dictionary" />
+          <EntitySet Name="MyRole_Dictionary" EntityType="Model.MyRole_Dictionary" />
+          <EntitySet Name="MyUser" EntityType="Model.MyUser" />
+          <AssociationSet Name="FK__Book__Author__52593CB8" Association="Model.FK__Book__Author__52593CB8">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Book__Genre__534D60F1" Association="Model.FK__Book__Genre__534D60F1">
+            <End Role="Genre_Dictionary" EntitySet="Genre_Dictionary" />
+            <End Role="Book" EntitySet="Book" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MyUser__Role__4F7CD00D" Association="Model.FK__MyUser__Role__4F7CD00D">
+            <End Role="MyRole_Dictionary" EntitySet="MyRole_Dictionary" />
+            <End Role="MyUser" EntitySet="MyUser" />
+          </AssociationSet>
+          <EntitySet Name="UserBookHistory" EntityType="Model.UserBookHistory" />
+          <AssociationSet Name="FK__UserBookH__BookI__571DF1D5" Association="Model.FK__UserBookH__BookI__571DF1D5">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="UserBookHistory" EntitySet="UserBookHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserBookH__UserI__5812160E" Association="Model.FK__UserBookH__UserI__5812160E">
+            <End Role="MyUser" EntitySet="MyUser" />
+            <End Role="UserBookHistory" EntitySet="UserBookHistory" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LifeTime" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Book" Relationship="Model.FK__Book__Author__52593CB8" FromRole="Author" ToRole="Book" />
+        </EntityType>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Author" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Genre" Type="Int32" />
+          <Property Name="Year" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Author1" Relationship="Model.FK__Book__Author__52593CB8" FromRole="Book" ToRole="Author" />
+          <NavigationProperty Name="Genre_Dictionary" Relationship="Model.FK__Book__Genre__534D60F1" FromRole="Book" ToRole="Genre_Dictionary" />
+          <NavigationProperty Name="UserBookHistory" Relationship="Model.FK__UserBookH__BookI__571DF1D5" FromRole="Book" ToRole="UserBookHistory" />
+        </EntityType>
+        <EntityType Name="Genre_Dictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Book" Relationship="Model.FK__Book__Genre__534D60F1" FromRole="Genre_Dictionary" ToRole="Book" />
+        </EntityType>
+        <EntityType Name="MyRole_Dictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MyUser" Relationship="Model.FK__MyUser__Role__4F7CD00D" FromRole="MyRole_Dictionary" ToRole="MyUser" />
+        </EntityType>
+        <EntityType Name="MyUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FuulName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MyRole_Dictionary" Relationship="Model.FK__MyUser__Role__4F7CD00D" FromRole="MyUser" ToRole="MyRole_Dictionary" />
+          <NavigationProperty Name="UserBookHistory" Relationship="Model.FK__UserBookH__UserI__5812160E" FromRole="MyUser" ToRole="UserBookHistory" />
+        </EntityType>
+        <Association Name="FK__Book__Author__52593CB8">
+          <End Type="Model.Author" Role="Author" Multiplicity="1" />
+          <End Type="Model.Book" Role="Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Book__Genre__534D60F1">
+          <End Type="Model.Genre_Dictionary" Role="Genre_Dictionary" Multiplicity="0..1" />
+          <End Type="Model.Book" Role="Book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre_Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Book">
+              <PropertyRef Name="Genre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MyUser__Role__4F7CD00D">
+          <End Type="Model.MyRole_Dictionary" Role="MyRole_Dictionary" Multiplicity="1" />
+          <End Type="Model.MyUser" Role="MyUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MyRole_Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MyUser">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UserBookHistory">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="DateTaken" Type="DateTime" Precision="3" />
+          <Property Name="DateReturned" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Book" Relationship="Model.FK__UserBookH__BookI__571DF1D5" FromRole="UserBookHistory" ToRole="Book" />
+          <NavigationProperty Name="MyUser" Relationship="Model.FK__UserBookH__UserI__5812160E" FromRole="UserBookHistory" ToRole="MyUser" />
+        </EntityType>
+        <Association Name="FK__UserBookH__BookI__571DF1D5">
+          <End Type="Model.Book" Role="Book" Multiplicity="1" />
+          <End Type="Model.UserBookHistory" Role="UserBookHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserBookHistory">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserBookH__UserI__5812160E">
+          <End Type="Model.MyUser" Role="MyUser" Multiplicity="1" />
+          <End Type="Model.UserBookHistory" Role="UserBookHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MyUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserBookHistory">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -330,6 +628,65 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Author">
+            <EntityTypeMapping TypeName="Model.Author">
+              <MappingFragment StoreEntitySet="Author">
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="LifeTime" ColumnName="LifeTime" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Book">
+            <EntityTypeMapping TypeName="Model.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genre_Dictionary">
+            <EntityTypeMapping TypeName="Model.Genre_Dictionary">
+              <MappingFragment StoreEntitySet="Genre_Dictionary">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MyRole_Dictionary">
+            <EntityTypeMapping TypeName="Model.MyRole_Dictionary">
+              <MappingFragment StoreEntitySet="MyRole_Dictionary">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MyUser">
+            <EntityTypeMapping TypeName="Model.MyUser">
+              <MappingFragment StoreEntitySet="MyUser">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FuulName" ColumnName="FuulName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserBookHistory">
+            <EntityTypeMapping TypeName="Model.UserBookHistory">
+              <MappingFragment StoreEntitySet="UserBookHistory">
+                <ScalarProperty Name="DateReturned" ColumnName="DateReturned" />
+                <ScalarProperty Name="DateTaken" ColumnName="DateTaken" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -345,7 +702,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="false" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
       </DesignerInfoPropertySet>
