@@ -12,7 +12,7 @@ namespace office_library_backend.Models.Repositories
     public class BookRepository : IBookRepository
     {
         private int _nextId = 1;
-        private Entities db = new Entities();
+        private Entities1 db = new Entities1();
 
         public List<Book> Initialize()
         {

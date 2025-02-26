@@ -199,52 +199,53 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AspNetRoles.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
+      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUserClaims.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
+      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUserLogins.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
+      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUsers.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
+      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Author.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
+      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Book.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
+      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C__MigrationHistory.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DataModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DataModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DataModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataModel.edmx</DependentUpon>
+      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Genre_Dictionary.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
+      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MyDto\BooksDto.cs" />
     <Compile Include="Models\MyDto\UsersDto.cs" />
+    <Compile Include="Models\MyXmlHelper.cs" />
+    <Compile Include="Models\OfficeLibraryModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OfficeLibraryModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OfficeLibraryModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OfficeLibraryModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\Repositories\BookRepository.cs" />
     <Compile Include="Models\Repositories\IBookRepository.cs" />
     <Compile Include="Models\UserBookHistory.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
+      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -273,15 +274,15 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\DataModel.Context.tt">
+    <Content Include="Models\OfficeLibraryModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DataModel.edmx</DependentUpon>
-      <LastGenOutput>DataModel.Context.cs</LastGenOutput>
+      <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
+      <LastGenOutput>OfficeLibraryModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\DataModel.tt">
+    <Content Include="Models\OfficeLibraryModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DataModel.edmx</DependentUpon>
-      <LastGenOutput>DataModel.cs</LastGenOutput>
+      <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
+      <LastGenOutput>OfficeLibraryModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -289,12 +290,12 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\DataModel.edmx">
+    <EntityDeploy Include="Models\OfficeLibraryModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DataModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>OfficeLibraryModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\DataModel.edmx.diagram">
-      <DependentUpon>DataModel.edmx</DependentUpon>
+    <Content Include="Models\OfficeLibraryModel.edmx.diagram">
+      <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

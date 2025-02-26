@@ -26,9 +26,10 @@ namespace office_library_backend.Controllers
         //    return Ok("Protected resourse");
         //}
 
-        public IEnumerable<BooksDto> GetAllBooks()
+        [System.Web.Http.HttpGet]
+        public string GetAllBooks()
         {
-            return repository.GetAll().Select(b => new BooksDto()
+            var books = repository.GetAll().Select(b => new BooksDto()
             {
                 Id = b.Id,
                 Title = b.Title,
@@ -37,7 +38,9 @@ namespace office_library_backend.Controllers
                 Year = b.Year,
                 //Readers = b.UserBookHistory.Select(u => new UsersDto() { Id = u.UserId }).ToList(),
                 //Ships = p.BooksToShips.Select(s => s.ShipID.Value.ToString()).ToList(),
-            });
+            }).ToList();
+
+            return MyXmlHelper.SerializeToXml(books);
         }
 
 

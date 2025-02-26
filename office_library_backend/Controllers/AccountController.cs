@@ -19,7 +19,7 @@ namespace office_library_backend.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private Entities DefualtDb = new Entities();
+        private Entities1 DefualtDb = new Entities1();
         public AccountController()
         {
         }
