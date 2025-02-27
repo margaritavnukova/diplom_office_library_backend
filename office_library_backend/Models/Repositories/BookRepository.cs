@@ -14,10 +14,18 @@ namespace office_library_backend.Models.Repositories
         private int _nextId = 1;
         private Entities1 db = new Entities1();
 
-        public List<Book> Initialize()
+        public List<BooksDto> Initialize()
         {
             var query = from Book in db.Book.ToList() select Book;
-            return query.ToList();
+            var books = query.ToList();
+
+            List<BooksDto> booksDto = new List<BooksDto>();
+            foreach (var book in books)
+            {
+                booksDto.Add(new BooksDto(book));
+            }
+
+            return booksDto;
         }
 
         public Book Add(Book item)
@@ -30,13 +38,13 @@ namespace office_library_backend.Models.Repositories
             return item;
         }
 
-        public Book Get(int id)
+        public BooksDto Get(int id)
         {
             var books = Initialize();
             return books.Find(p => p.Id == id);
         }
 
-        public IEnumerable<Book> GetAll()
+        public IEnumerable<BooksDto> GetAll()
         {
             var books = Initialize();
             return books;
@@ -61,7 +69,6 @@ namespace office_library_backend.Models.Repositories
 
             var itemToDelete = db.Book.Where(p => p.Id == item.Id).FirstOrDefault();
             itemToDelete.Title = item.Title;
-            itemToDelete.Author = item.Author;
             db.Entry(itemToDelete).State = EntityState.Modified;
             db.SaveChanges();
             return true;

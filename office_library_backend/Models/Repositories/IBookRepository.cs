@@ -9,8 +9,8 @@ namespace office_library_backend.Models.Repositories
 {
     interface IBookRepository
     {
-        IEnumerable<Book> GetAll();
-        Book Get(int id);
+        IEnumerable<BooksDto> GetAll();
+        BooksDto Get(int id);
         Book Add(Book item);
         void Remove(int id);
         bool Update(BooksDto item);

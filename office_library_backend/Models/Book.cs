@@ -23,11 +23,12 @@ namespace office_library_backend.Models
         public int Id { get; set; }
         public int Author { get; set; }
         public string Title { get; set; }
-        public Nullable<int> Genre { get; set; }
+        public Nullable<int> Genre { get; set; } //foreign key
         public Nullable<System.DateTime> Year { get; set; }
     
         public virtual Author Author1 { get; set; }
-        public virtual Genre_Dictionary Genre_Dictionary { get; set; }
+        public virtual Genre_Dictionary Genre_Dictionary { get; set; } //navigation property
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserBookHistory> UserBookHistory { get; set; }
     }

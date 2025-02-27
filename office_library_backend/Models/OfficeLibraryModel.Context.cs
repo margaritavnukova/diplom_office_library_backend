@@ -22,6 +22,20 @@ namespace office_library_backend.Models
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Book>()
+                .HasOptional<Genre_Dictionary>(b => b.Genre_Dictionary)
+                .WithMany(g => g.Book)
+                .HasForeignKey(b => b.Genre);
+
+            modelBuilder.Entity<Book>()
+                .HasOptional<Author>(b => b.Author1)
+                .WithMany(a => a.Book)
+                .HasForeignKey(b => b.Author);
+
+                //.HasOne(o => o.Customer)
+                //.WithMany(c => c.Orders)
+                //.HasForeignKey(o => o.CustomerId);
+
             throw new UnintentionalCodeFirstException();
         }
     

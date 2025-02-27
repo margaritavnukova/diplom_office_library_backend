@@ -11,6 +11,7 @@ using office_library_backend.Models.Repositories;
 using office_library_backend.Models;
 using office_library_backend.Models.MyDto;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace office_library_backend.Controllers
 {
@@ -36,17 +37,17 @@ namespace office_library_backend.Controllers
                 Author = b.Author,
                 Genre = b.Genre,
                 Year = b.Year,
-                //Readers = b.UserBookHistory.Select(u => new UsersDto() { Id = u.UserId }).ToList(),
+                
                 //Ships = p.BooksToShips.Select(s => s.ShipID.Value.ToString()).ToList(),
             }).ToList();
 
-            return MyXmlHelper.SerializeToXml(books);
+            return JsonConvert.SerializeObject(books);
         }
 
 
-        public Book GetBook(int id)
+        public BooksDto GetBook(int id)
         {
-            Book item = repository.Get(id);
+            BooksDto item = repository.Get(id);
             if (item == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -54,11 +55,11 @@ namespace office_library_backend.Controllers
             return item;
         }
 
-        public IEnumerable<Book> GetBooksByTitle(string t)
-        {
-            return repository.GetAll().Where(
-                b => string.Equals(b.Title, t, StringComparison.OrdinalIgnoreCase));
-        }
+        //public IEnumerable<BooksDto> GetBooksByTitle(string t)
+        //{
+        //    return repository.GetAll().Where(
+        //        b => string.Equals(b.Title, t, StringComparison.OrdinalIgnoreCase));
+        //}
 
         public HttpResponseMessage PostBook(Book book)
         {
