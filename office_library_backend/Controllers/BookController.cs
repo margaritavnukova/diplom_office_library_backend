@@ -18,28 +18,21 @@ namespace office_library_backend.Controllers
     //[System.Web.Http.Authorize(Roles = "Admin")]
     public class BookController : ApiController
     {
-        //static string IP = "44319";
-
+        Entities1 dbContext = new Entities1();
         static readonly IBookRepository repository = new BookRepository();
-
-        //public IHttpActionResult Get()
-        //{
-        //    return Ok("Protected resourse");
-        //}
 
         [System.Web.Http.HttpGet]
         public string GetAllBooks()
         {
-            var books = repository.GetAll().Select(b => new BooksDto()
+            var books = repository.GetAll().Select(book => new BooksDto()
             {
-                Id = b.Id,
-                Title = b.Title,
-                Author = b.Author,
-                Genre = b.Genre,
-                Year = b.Year,
-                
-                //Ships = p.BooksToShips.Select(s => s.ShipID.Value.ToString()).ToList(),
-            }).ToList();
+                Id = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                Genre = book.Genre,
+                Year = book.Year,
+                Readers = book.Readers
+            });
 
             return JsonConvert.SerializeObject(books);
         }

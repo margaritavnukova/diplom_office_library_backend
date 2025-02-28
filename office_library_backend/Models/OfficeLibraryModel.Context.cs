@@ -23,18 +23,29 @@ namespace office_library_backend.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Book>()
-                .HasOptional<Genre_Dictionary>(b => b.Genre_Dictionary)
+                .HasRequired<Genre_Dictionary>(b => b.Genre_Dictionary)
                 .WithMany(g => g.Book)
                 .HasForeignKey(b => b.Genre);
 
             modelBuilder.Entity<Book>()
-                .HasOptional<Author>(b => b.Author1)
+                .HasRequired<Author>(b => b.Author1)
                 .WithMany(a => a.Book)
                 .HasForeignKey(b => b.Author);
 
-                //.HasOne(o => o.Customer)
-                //.WithMany(c => c.Orders)
-                //.HasForeignKey(o => o.CustomerId);
+            modelBuilder.Entity<UserBookHistory>()
+            .HasKey(c => new {c.BookId, c.UserId}); // Композитный ключ
+
+            modelBuilder.Entity<UserBookHistory>()
+                .HasRequired<Book>(c => c.Book)
+                .WithMany(b => b.UserBookHistory)
+                .HasForeignKey(c => c.BookId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<UserBookHistory>()
+                .HasRequired<AspNetUsers>(c => c.AspNetUsers)
+                .WithMany(r => r.UserBookHistory)
+                .HasForeignKey(c => c.UserId)
+                .WillCascadeOnDelete(false);
 
             throw new UnintentionalCodeFirstException();
         }
