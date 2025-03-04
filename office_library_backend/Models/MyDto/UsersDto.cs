@@ -11,6 +11,7 @@ namespace office_library_backend.Models.MyDto
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string UserName { get; set; }
+        public string Password { get; set; }
 
         public List<UserBookHistory> History { get; } = new List<UserBookHistory>();
         public List<BooksDto> Books { get; set; }
@@ -23,6 +24,7 @@ namespace office_library_backend.Models.MyDto
             Email = user.Email;
             PhoneNumber = user.PhoneNumber;
             UserName = user.UserName;
+            Password = user.PasswordHash;
         }
     }
 }

@@ -11,6 +11,13 @@ using Microsoft.Owin.Security;
 using System.Web.Security;
 using office_library_backend.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Web.Helpers;
+using Microsoft.Ajax.Utilities;
+using System.Web.WebPages;
+using office_library_backend.Models.MyDto;
+using Newtonsoft.Json;
+using System.Net;
+using System.Web.Http.Results;
 
 namespace office_library_backend.Controllers
 {
@@ -84,17 +91,10 @@ namespace office_library_backend.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return this.View();
             }
 
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-
-            // Get role name
-            //var user = OfficeDb.MyUser.Where(u => u.Email == model.Email).FirstOrDefault();
-            //string roleName = String.Empty;
-            //roleName = user != null ?
-            //     user.MyRole_Dictionary.Name 
-            //     : "User";
 
             switch (result)
             {
@@ -108,7 +108,7 @@ namespace office_library_backend.Controllers
                     //    await userManager.AddToRoleAsync(defaultUser.Id, roleName);
                     //    //Roles.AddUserToRole(model.Email, roleName);
                     //}
-                    return RedirectToLocal(returnUrl);
+                    return Json(result, JsonRequestBehavior.AllowGet);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 //case SignInStatus.RequiresVerification:
@@ -176,12 +176,19 @@ namespace office_library_backend.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(string jsonUser)
         {
+            UsersDto userFromJson = new UsersDto();
+
+            if (!jsonUser.IsEmpty())
+            {
+                userFromJson = JsonConvert.DeserializeObject<UsersDto>(jsonUser);
+            }
+
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var user = new ApplicationUser { UserName = userFromJson.Email, Email = userFromJson.Email };
+                var result = await UserManager.CreateAsync(user, userFromJson.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
@@ -202,8 +209,42 @@ namespace office_library_backend.Controllers
             }
 
             // Появление этого сообщения означает наличие ошибки; повторное отображение формы
-            return View(model);
+            return View();
         }
+
+        //// original
+        //// POST: /Account/Register
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Register(RegisterViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+        //        var result = await UserManager.CreateAsync(user, model.Password);
+        //        if (result.Succeeded)
+        //        {
+        //            await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
+        //            // добавляю всех новых в роль Юзер
+        //            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+        //            await userManager.AddToRoleAsync(user.Id, "User");
+
+        //            // Дополнительные сведения о включении подтверждения учетной записи и сброса пароля см. на странице https://go.microsoft.com/fwlink/?LinkID=320771.
+        //            // Отправка сообщения электронной почты с этой ссылкой
+        //            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+        //            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+        //            // await UserManager.SendEmailAsync(user.Id, "Подтверждение учетной записи", "Подтвердите вашу учетную запись, щелкнув <a href=\"" + callbackUrl + "\">здесь</a>");
+
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        AddErrors(result);
+        //    }
+
+        //    // Появление этого сообщения означает наличие ошибки; повторное отображение формы
+        //    return View(model);
+        //}
 
         //
         // GET: /Account/ConfirmEmail
