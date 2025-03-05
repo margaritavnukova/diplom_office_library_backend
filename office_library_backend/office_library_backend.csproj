@@ -194,6 +194,7 @@
     <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -244,6 +245,8 @@
     </Compile>
     <Compile Include="Models\Repositories\BookRepository.cs" />
     <Compile Include="Models\Repositories\IBookRepository.cs" />
+    <Compile Include="Models\Repositories\IUserRepository.cs" />
+    <Compile Include="Models\Repositories\UserRepository.cs" />
     <Compile Include="Models\UserBookHistory.cs">
       <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
     </Compile>
@@ -346,6 +349,7 @@
   <ItemGroup>
     <Folder Include="Models\MyModels\" />
     <Folder Include="Views\Book\" />
+    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

@@ -37,22 +37,24 @@ namespace office_library_backend.Controllers
             return JsonConvert.SerializeObject(books);
         }
 
-
-        public BooksDto GetBook(int id)
+        [System.Web.Http.HttpGet]
+        public string GetBook(int id)
         {
             BooksDto item = repository.Get(id);
             if (item == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
-            return item;
+            return JsonConvert.SerializeObject(item);
         }
 
-        //public IEnumerable<BooksDto> GetBooksByTitle(string t)
-        //{
-        //    return repository.GetAll().Where(
-        //        b => string.Equals(b.Title, t, StringComparison.OrdinalIgnoreCase));
-        //}
+        // https://localhost:44319/api/Book/GetBooksByReader?reader=test1@mail.com
+        [System.Web.Http.HttpGet]
+        public string GetBooksByReader(UsersDto reader)
+        {
+            var books = repository.GetAll().Where(b => b.Readers.Contains(reader));
+            return JsonConvert.SerializeObject(books);
+        }
 
         public HttpResponseMessage PostBook(Book book)
         {

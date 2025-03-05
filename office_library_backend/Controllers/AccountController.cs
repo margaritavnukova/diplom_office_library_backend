@@ -18,6 +18,7 @@ using office_library_backend.Models.MyDto;
 using Newtonsoft.Json;
 using System.Net;
 using System.Web.Http.Results;
+using office_library_backend.Models.Repositories;
 
 namespace office_library_backend.Controllers
 {
@@ -26,7 +27,7 @@ namespace office_library_backend.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private Entities1 DefualtDb = new Entities1();
+        private Entities1 DefaultDb = new Entities1();
         public AccountController()
         {
         }
@@ -99,15 +100,9 @@ namespace office_library_backend.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    // Нужно было чтобы добавить пользовательниц к ролям. Больше не нужно
-                    //if (roleName != null)
-                    //{
-                    //    var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-                    //    var defaultUser = DefualtDb.AspNetUsers.Where(u => u.Email == model.Email).FirstOrDefault();
 
-                    //    await userManager.AddToRoleAsync(defaultUser.Id, roleName);
-                    //    //Roles.AddUserToRole(model.Email, roleName);
-                    //}
+                    //var userToReturn = DefaultDb.AspNetUsers.FirstOrDefault(u => u.Email == model.Email);
+
                     return Json(result, JsonRequestBehavior.AllowGet);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
