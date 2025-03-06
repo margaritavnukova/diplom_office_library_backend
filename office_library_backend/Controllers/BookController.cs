@@ -6,7 +6,6 @@ using System.Net;
 using System.Security.Policy;
 using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
 using office_library_backend.Models.Repositories;
 using office_library_backend.Models;
 using office_library_backend.Models.MyDto;
@@ -15,13 +14,14 @@ using Newtonsoft.Json;
 
 namespace office_library_backend.Controllers
 {
-    //[System.Web.Http.Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class BookController : ApiController
     {
         Entities1 dbContext = new Entities1();
         static readonly IBookRepository repository = new BookRepository();
 
-        [System.Web.Http.HttpGet]
+        [HttpGet]
+        [Route("api/Book/GetAll")]
         public string GetAllBooks()
         {
             var books = repository.GetAll().Select(book => new BooksDto()
@@ -37,7 +37,8 @@ namespace office_library_backend.Controllers
             return JsonConvert.SerializeObject(books);
         }
 
-        [System.Web.Http.HttpGet]
+        [HttpGet]
+        [Route("api/Book/{id}")]
         public string GetBook(int id)
         {
             BooksDto item = repository.Get(id);
@@ -48,11 +49,15 @@ namespace office_library_backend.Controllers
             return JsonConvert.SerializeObject(item);
         }
 
-        // https://localhost:44319/api/Book/GetBooksByReader?reader=test1@mail.com
-        [System.Web.Http.HttpGet]
-        public string GetBooksByReader(UsersDto reader)
+        [HttpGet]
+        [Route("api/Book/GetByReader/{email}")]
+        public string GetBooksByReader(string email)
         {
-            var books = repository.GetAll().Where(b => b.Readers.Contains(reader));
+            var editedEmail = email.Replace('-', '.');
+            var books = repository.GetAll().Where(
+                b => b.Readers.Any(
+                    reader => reader.Email == editedEmail)
+                );
             return JsonConvert.SerializeObject(books);
         }
 

@@ -9,7 +9,6 @@ using System.Net.Http;
 using System.Net;
 using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
 
 namespace office_library_backend.Controllers
 {
@@ -18,7 +17,8 @@ namespace office_library_backend.Controllers
         Entities1 dbContext = new Entities1();
         static readonly IUserRepository repository = new UserRepository();
 
-        [System.Web.Http.HttpGet]
+        [HttpGet]
+        [Route("api/User/GetAll")]
         public string GetAllUsers()
         {
             var users = repository.GetAll().Select(user => new UsersDto()
@@ -42,11 +42,13 @@ namespace office_library_backend.Controllers
         //    return item;
         //}
 
-        // https://localhost:44319/api/User/GetUserByEmail?email=test1@mail.com
+        [HttpGet]
+        [Route("api/User/GetByEmail/{email}")]
         public string GetUserByEmail(string email)
         {
+            var editedEmail = email.Replace('-', '.');
             var user = repository.GetAll().Where(
-                u => string.Equals(u.Email, email, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+                u => string.Equals(u.Email, editedEmail, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
             return JsonConvert.SerializeObject(user);
         }
 

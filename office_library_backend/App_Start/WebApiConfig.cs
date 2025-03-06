@@ -19,6 +19,12 @@ namespace office_library_backend
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "ActionApi",
+                routeTemplate: "api/{controller}/{action}/{parameter}",
+                defaults: new { parameter = RouteParameter.Optional }
+            );
         }
     }
 }
