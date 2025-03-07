@@ -227,7 +227,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MyDto\BooksDto.cs" />
     <Compile Include="Models\MyDto\UsersDto.cs" />
-    <Compile Include="Models\MyXmlHelper.cs" />
+    <Compile Include="Models\MyModels\modelBuilderReserveCopy.cs" />
     <Compile Include="Models\OfficeLibraryModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -347,7 +347,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\MyModels\" />
     <Folder Include="Views\Book\" />
     <Folder Include="Views\User\" />
   </ItemGroup>

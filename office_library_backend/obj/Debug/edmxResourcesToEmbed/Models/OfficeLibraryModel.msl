@@ -41,6 +41,8 @@
     <EntitySetMapping Name="AspNetUsers">
       <EntityTypeMapping TypeName="Model.AspNetUsers">
         <MappingFragment StoreEntitySet="AspNetUsers">
+          <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
@@ -59,6 +61,7 @@
     <EntitySetMapping Name="Author">
       <EntityTypeMapping TypeName="Model.Author">
         <MappingFragment StoreEntitySet="Author">
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="LifeTime" ColumnName="LifeTime" />
@@ -69,6 +72,7 @@
     <EntitySetMapping Name="Book">
       <EntityTypeMapping TypeName="Model.Book">
         <MappingFragment StoreEntitySet="Book">
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Author" ColumnName="Author" />
           <ScalarProperty Name="Title" ColumnName="Title" />

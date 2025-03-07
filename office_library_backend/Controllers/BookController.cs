@@ -31,7 +31,11 @@ namespace office_library_backend.Controllers
                 Author = book.Author,
                 Genre = book.Genre,
                 Year = book.Year,
-                Readers = book.Readers
+                PhotoBase64 = book.PhotoBase64,
+                IsTaken = book.IsTaken,
+                DateOfReturning = book.DateOfReturning,
+                TakingCount = book.TakingCount,
+                Readers = book.Readers,
             });
 
             return JsonConvert.SerializeObject(books);

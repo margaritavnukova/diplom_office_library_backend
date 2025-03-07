@@ -33,7 +33,7 @@ namespace office_library_backend.Models
                 .HasForeignKey(b => b.Author);
 
             modelBuilder.Entity<UserBookHistory>()
-            .HasKey(c => new {c.BookId, c.UserId}); // Композитный ключ
+            .HasKey(c => new { c.BookId, c.UserId }); // Композитный ключ
 
             modelBuilder.Entity<UserBookHistory>()
                 .HasRequired<Book>(c => c.Book)
@@ -46,6 +46,14 @@ namespace office_library_backend.Models
                 .WithMany(r => r.UserBookHistory)
                 .HasForeignKey(c => c.UserId)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AspNetUsers>()
+                .HasMany<AspNetRoles>(u => u.AspNetRoles)
+                .WithMany(r => r.AspNetUsers);
+
+            modelBuilder.Entity<AspNetRoles>()
+                .HasMany<AspNetUsers>(r => r.AspNetUsers)
+                .WithMany(u => u.AspNetRoles);
 
             throw new UnintentionalCodeFirstException();
         }

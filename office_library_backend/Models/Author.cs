@@ -24,6 +24,7 @@ namespace office_library_backend.Models
         public string Name { get; set; }
         public string LifeTime { get; set; }
         public string Country { get; set; }
+        public byte[] Photo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Book> Book { get; set; }

@@ -60,6 +60,8 @@
     <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
     <Property Name="AccessFailedCount" Type="int" Nullable="false" />
     <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+    <Property Name="Photo" Type="varbinary(max)" />
+    <Property Name="RegistrationDate" Type="date" />
   </EntityType>
   <EntityType Name="Author">
     <Key>
@@ -69,6 +71,7 @@
     <Property Name="Name" Type="nvarchar" MaxLength="50" />
     <Property Name="LifeTime" Type="nvarchar" MaxLength="10" />
     <Property Name="Country" Type="nvarchar" MaxLength="50" />
+    <Property Name="Photo" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="Book">
     <Key>
@@ -79,6 +82,7 @@
     <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="Genre" Type="int" />
     <Property Name="Year" Type="datetime" />
+    <Property Name="Photo" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="Genre_Dictionary">
     <Key>

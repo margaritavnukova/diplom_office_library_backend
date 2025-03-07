@@ -14,19 +14,13 @@ namespace office_library_backend.Models.MyDto
         public string Title { get; set; }
         public string Genre { get; set; }
         public Nullable<System.DateTime> Year { get; set; }
-
-        public virtual List<UserBookHistory> UserBookHistory { get; set; } = new List<UserBookHistory>();
+        public string PhotoBase64 { get; set; }
+        public bool IsTaken { get; set; }
+        public System.DateTime? DateOfReturning { get; set; }
+        public int TakingCount { get; set; }
         public List<UsersDto> Readers { get; set; } = new List<UsersDto>();
 
-        public BooksDto()
-        {
-            Id = -1;
-            Author = String.Empty;
-            Title = String.Empty;
-            Genre = String.Empty;
-            Year = null;
-            Readers = null;
-        }
+        public BooksDto() { }
 
         public BooksDto(Book book)
         {
@@ -36,8 +30,17 @@ namespace office_library_backend.Models.MyDto
             Genre = book.Genre_Dictionary.Name;
             Year = book.Year;
 
-            var readers = book.UserBookHistory;
+            PhotoBase64 = book.Photo != null
+                ? Convert.ToBase64String(book.Photo)
+                : null;
 
+            DateOfReturning = book.UserBookHistory.Count != 0 
+                ? book.UserBookHistory.OrderBy(b => b.DateTaken).FirstOrDefault().DateReturned
+                : null;
+            IsTaken = DateOfReturning != null;
+            TakingCount = book.UserBookHistory.Count();
+
+            var readers = book.UserBookHistory;
             if (readers != null)
                 foreach (var readerHistory in readers)
                 {

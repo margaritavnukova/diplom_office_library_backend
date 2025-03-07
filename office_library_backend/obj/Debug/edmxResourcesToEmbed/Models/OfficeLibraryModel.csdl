@@ -59,6 +59,8 @@
     <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
     <NavigationProperty Name="UserBookHistory" Relationship="Self.FK__UserBookH__UserI__5DCAEF64" FromRole="AspNetUsers" ToRole="UserBookHistory" />
     <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+    <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="RegistrationDate" Type="DateTime" Precision="0" />
   </EntityType>
   <EntityType Name="Author">
     <Key>
@@ -69,6 +71,7 @@
     <Property Name="LifeTime" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Book" Relationship="Self.FK__Book__Author__52593CB8" FromRole="Author" ToRole="Book" />
+    <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityType Name="Book">
     <Key>
@@ -82,6 +85,7 @@
     <NavigationProperty Name="Author1" Relationship="Self.FK__Book__Author__52593CB8" FromRole="Book" ToRole="Author" />
     <NavigationProperty Name="Genre_Dictionary" Relationship="Self.FK__Book__Genre__534D60F1" FromRole="Book" ToRole="Genre_Dictionary" />
     <NavigationProperty Name="UserBookHistory" Relationship="Self.FK__UserBookH__BookI__5CD6CB2B" FromRole="Book" ToRole="UserBookHistory" />
+    <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityType Name="Genre_Dictionary">
     <Key>

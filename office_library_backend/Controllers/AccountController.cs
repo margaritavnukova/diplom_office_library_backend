@@ -166,27 +166,19 @@ namespace office_library_backend.Controllers
             return View();
         }
 
-        //
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(string jsonUser)
+        public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            UsersDto userFromJson = new UsersDto();
-
-            if (!jsonUser.IsEmpty())
-            {
-                userFromJson = JsonConvert.DeserializeObject<UsersDto>(jsonUser);
-            }
-
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = userFromJson.Email, Email = userFromJson.Email };
-                var result = await UserManager.CreateAsync(user, userFromJson.Password);
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+                var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // добавляю всех новых в роль Юзер
                     var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
@@ -204,42 +196,8 @@ namespace office_library_backend.Controllers
             }
 
             // Появление этого сообщения означает наличие ошибки; повторное отображение формы
-            return View();
+            return View(model);
         }
-
-        //// original
-        //// POST: /Account/Register
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Register(RegisterViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-        //        var result = await UserManager.CreateAsync(user, model.Password);
-        //        if (result.Succeeded)
-        //        {
-        //            await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-
-        //            // добавляю всех новых в роль Юзер
-        //            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-        //            await userManager.AddToRoleAsync(user.Id, "User");
-
-        //            // Дополнительные сведения о включении подтверждения учетной записи и сброса пароля см. на странице https://go.microsoft.com/fwlink/?LinkID=320771.
-        //            // Отправка сообщения электронной почты с этой ссылкой
-        //            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-        //            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-        //            // await UserManager.SendEmailAsync(user.Id, "Подтверждение учетной записи", "Подтвердите вашу учетную запись, щелкнув <a href=\"" + callbackUrl + "\">здесь</a>");
-
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //        AddErrors(result);
-        //    }
-
-        //    // Появление этого сообщения означает наличие ошибки; повторное отображение формы
-        //    return View(model);
-        //}
 
         //
         // GET: /Account/ConfirmEmail

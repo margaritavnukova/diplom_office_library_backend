@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -65,6 +65,8 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Photo" Type="varbinary(max)" />
+          <Property Name="RegistrationDate" Type="date" />
         </EntityType>
         <EntityType Name="Author">
           <Key>
@@ -74,6 +76,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="LifeTime" Type="nvarchar" MaxLength="10" />
           <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="Photo" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Book">
           <Key>
@@ -84,6 +87,7 @@
           <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Genre" Type="int" />
           <Property Name="Year" Type="datetime" />
+          <Property Name="Photo" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Genre_Dictionary">
           <Key>
@@ -260,8 +264,7 @@
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -324,6 +327,8 @@
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
           <NavigationProperty Name="UserBookHistory" Relationship="Self.FK__UserBookH__UserI__5DCAEF64" FromRole="AspNetUsers" ToRole="UserBookHistory" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="RegistrationDate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="Author">
           <Key>
@@ -334,6 +339,7 @@
           <Property Name="LifeTime" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Book" Relationship="Self.FK__Book__Author__52593CB8" FromRole="Author" ToRole="Book" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="Book">
           <Key>
@@ -347,6 +353,7 @@
           <NavigationProperty Name="Author1" Relationship="Self.FK__Book__Author__52593CB8" FromRole="Book" ToRole="Author" />
           <NavigationProperty Name="Genre_Dictionary" Relationship="Self.FK__Book__Genre__534D60F1" FromRole="Book" ToRole="Genre_Dictionary" />
           <NavigationProperty Name="UserBookHistory" Relationship="Self.FK__UserBookH__BookI__5CD6CB2B" FromRole="Book" ToRole="UserBookHistory" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="Genre_Dictionary">
           <Key>
@@ -534,6 +541,8 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="Model.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
@@ -552,6 +561,7 @@
           <EntitySetMapping Name="Author">
             <EntityTypeMapping TypeName="Model.Author">
               <MappingFragment StoreEntitySet="Author">
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="LifeTime" ColumnName="LifeTime" />
@@ -562,6 +572,7 @@
           <EntitySetMapping Name="Book">
             <EntityTypeMapping TypeName="Model.Book">
               <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Author" ColumnName="Author" />
                 <ScalarProperty Name="Title" ColumnName="Title" />

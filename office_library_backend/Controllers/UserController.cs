@@ -23,24 +23,27 @@ namespace office_library_backend.Controllers
         {
             var users = repository.GetAll().Select(user => new UsersDto()
             {
-                Id = user.Id,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-            });
+                UserName = user.UserName,
+                Role = user.Role,
+                PhotoBase64 = user.PhotoBase64
+            }) ;
 
             return JsonConvert.SerializeObject(users);
         }
 
-
-        //public UsersDto GetUser(string id)
-        //{
-        //    UsersDto item = repository.Get(id);
-        //    if (item == null)
-        //    {
-        //        throw new HttpResponseException(HttpStatusCode.NotFound);
-        //    }
-        //    return item;
-        //}
+        [HttpGet]
+        [Route("api/User/{id}")]
+        public UsersDto GetUser(string id)
+        {
+            UsersDto item = repository.Get(id);
+            if (item == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+            return item;
+        }
 
         [HttpGet]
         [Route("api/User/GetByEmail/{email}")]
