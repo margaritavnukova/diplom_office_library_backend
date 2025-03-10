@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Web;
@@ -34,9 +36,18 @@ namespace office_library_backend.Models.MyDto
                 ? Convert.ToBase64String(book.Photo)
                 : null;
 
+            DateTime? DateOfTaking = book.UserBookHistory.Count != 0 
+                ? book.UserBookHistory.OrderBy(b => b.DateTaken).FirstOrDefault().DateTaken
+                : null;
+
+            DateTime DateOfTakingFuture = DateOfTaking.HasValue
+                ? DateOfTaking.Value.AddDays(30)
+                : DateTime.Today; //костыль
+
             DateOfReturning = book.UserBookHistory.Count != 0 
                 ? book.UserBookHistory.OrderBy(b => b.DateTaken).FirstOrDefault().DateReturned
-                : null;
+                : DateOfTakingFuture;
+
             IsTaken = DateOfReturning != null;
             TakingCount = book.UserBookHistory.Count();
 
@@ -46,6 +57,38 @@ namespace office_library_backend.Models.MyDto
                 {
                     Readers.Add(new UsersDto(readerHistory.AspNetUsers));
                 }
+        }
+
+        public Book ConvertToBookModel(Entities1 context)
+        {
+            // Находим или создаём Author по имени
+            var author = context.Author.FirstOrDefault(a => a.Name == this.Author);
+            if (author == null)
+            {
+                author = new Author { Name = this.Author };
+                context.Author.Add(author);
+                context.SaveChanges(); // Сохраняем, чтобы получить Id
+            }
+
+            // Находим или создаём Genre по имени
+            var genre = context.Genre_Dictionary.FirstOrDefault(g => g.Name == this.Genre);
+            if (genre == null)
+            {
+                genre = new Genre_Dictionary { Name = this.Genre };
+                context.Genre_Dictionary.Add(genre);
+                context.SaveChanges(); // Сохраняем, чтобы получить Id
+            }
+
+            // Создаём объект Book
+            var book = new Book
+            {
+                Title = this.Title,
+                Author = author.Id,
+                Genre = genre.Id,
+                Year = this.Year,
+            };
+
+            return book;
         }
     }
 }
