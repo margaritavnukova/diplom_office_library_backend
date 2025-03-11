@@ -82,13 +82,18 @@ namespace office_library_backend.Models.MyDto
             // Создаём объект Book
             var book = new Book
             {
+                Id = this.Id,
                 Title = this.Title,
                 Author = author.Id,
+                Author1 = author,
                 Genre = genre.Id,
+                Genre_Dictionary = genre,
                 Year = this.Year,
             };
 
             return book;
         }
+
+
     }
 }

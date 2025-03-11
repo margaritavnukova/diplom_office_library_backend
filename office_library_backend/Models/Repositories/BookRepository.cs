@@ -28,14 +28,14 @@ namespace office_library_backend.Models.Repositories
             return booksDto;
         }
 
-        public Book Add(Book item)
+        public Book Add(Book book)
         {
-            if (item == null)
+            if (book == null)
                 throw new ArgumentNullException();
-            item.Id = _nextId++;
-            db.Book.Add(item);
+            book.Id = _nextId++;
+            db.Book.Add(book);
             db.SaveChanges();
-            return item;
+            return book;
         }
 
         public BooksDto Get(int id)
@@ -52,24 +52,26 @@ namespace office_library_backend.Models.Repositories
 
         public void Remove(int id)
         {
-            var itemToDelete = db.Book.Where(b => b.Id == id).FirstOrDefault();
+            var bookToDelete = db.Book.Where(b => b.Id == id).FirstOrDefault();
 
-            db.Book.Remove(itemToDelete);
+            db.Book.Remove(bookToDelete);
             db.SaveChanges();
         }
 
-        public bool Update(BooksDto item)
+        public bool Update(BooksDto book)
         {
             var books = Initialize();
-            if (item == null)
+            if (book == null)
                 throw new ArgumentNullException();
-            int index = books.FindIndex(p => p.Id == item.Id);
+            int index = books.FindIndex(p => p.Id == book.Id);
             if (index == -1)
                 return false;
 
-            var itemToDelete = db.Book.Where(p => p.Id == item.Id).FirstOrDefault();
-            itemToDelete.Title = item.Title;
-            db.Entry(itemToDelete).State = EntityState.Modified;
+            var bookToUpdate = db.Book.Where(p => p.Id == book.Id).FirstOrDefault();
+            
+            bookToUpdate = book.ConvertToBookModel(db);
+
+            db.Entry(bookToUpdate).State = EntityState.Modified;
             db.SaveChanges();
             return true;
         }
