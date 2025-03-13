@@ -14,44 +14,9 @@ using Newtonsoft.Json;
 
 namespace office_library_backend.Controllers
 {
-    //[Authorize(Roles = "Admin")]
-    public class BookController : ApiController
+    public class BookController : BaseController<BooksDto, Book>
     {
-        Entities1 dbContext = new Entities1();
-        static readonly IBookRepository repository = new BookRepository();
-
-        [HttpGet]
-        [Route("api/Book/GetAll")]
-        public string GetAllBooks()
-        {
-            var books = repository.GetAll().Select(book => new BooksDto()
-            {
-                Id = book.Id,
-                Title = book.Title,
-                Author = book.Author,
-                Genre = book.Genre,
-                Year = book.Year,
-                PhotoBase64 = book.PhotoBase64,
-                IsTaken = book.IsTaken,
-                DateOfReturning = book.DateOfReturning,
-                TakingCount = book.TakingCount,
-                Readers = book.Readers,
-            });
-
-            return JsonConvert.SerializeObject(books);
-        }
-
-        [HttpGet]
-        [Route("api/Book/{id}")]
-        public string GetBook([FromUri] int id)
-        {
-            BooksDto item = repository.Get(id);
-            if (item == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-            return JsonConvert.SerializeObject(item);
-        }
+        public BookController() : base(new BookRepository()) { }
 
         [HttpGet]
         [Route("api/Book/GetByReader/{email}")]
@@ -65,42 +30,14 @@ namespace office_library_backend.Controllers
             return JsonConvert.SerializeObject(books);
         }
 
-        [HttpPost]
-        [Route("api/Book/Post")]
-        public HttpResponseMessage PostBook([FromBody] BooksDto bookDto)
+        protected override BooksDto ConvertToDto(Book model)
         {
-            if (bookDto == null)
-                throw new Exception("Deserialize exception"); 
-
-            Book book = bookDto.ConvertToBookModel(dbContext);
-            book.Id = 0;
-            if (book.Title != null)
-                book = repository.Add(book);
-            dbContext.SaveChanges();
-            var response = Request.CreateResponse<Book>(HttpStatusCode.Created, book);
-
-            //string uri = Url.Link("DefaultApi", new { id = book.Id });
-            //response.Headers.Location = new Uri(uri);
-
-            return response;
+            return new BooksDto(model);
         }
 
-        [HttpPut]
-        [Route("api/Book/Put/{id}")]
-        public void PutBooks([FromUri] int id, [FromBody] BooksDto bookDto)
+        protected override Book ConvertToModel(BooksDto dto)
         {
-            bookDto.Id = id;
-            if (!repository.Update(bookDto))
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-        }
-
-        [HttpDelete]
-        [Route("api/Book/Delete/{id}")]
-        public void DeleteBook(int id)
-        {
-            repository.Remove(id);
+            return dto.ConvertToModel(dbContext);
         }
     }
 }

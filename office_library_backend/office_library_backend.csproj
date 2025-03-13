@@ -191,7 +191,9 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BookController.cs" />
+    <Compile Include="Controllers\GenreController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -225,7 +227,9 @@
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MyDto\BaseDto.cs" />
     <Compile Include="Models\MyDto\BooksDto.cs" />
+    <Compile Include="Models\MyDto\GenresDto.cs" />
     <Compile Include="Models\MyDto\UsersDto.cs" />
     <Compile Include="Models\MyModels\modelBuilderReserveCopy.cs" />
     <Compile Include="Models\OfficeLibraryModel.Context.cs">
@@ -243,9 +247,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Repositories\BaseRepository.cs" />
     <Compile Include="Models\Repositories\BookRepository.cs" />
-    <Compile Include="Models\Repositories\IBookRepository.cs" />
-    <Compile Include="Models\Repositories\IUserRepository.cs" />
+    <Compile Include="Models\Repositories\IBaseRepository.cs" />
+    <Compile Include="Models\Repositories\GenreRepository.cs" />
     <Compile Include="Models\Repositories\UserRepository.cs" />
     <Compile Include="Models\UserBookHistory.cs">
       <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
@@ -347,7 +352,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Base\" />
     <Folder Include="Views\Book\" />
+    <Folder Include="Views\Genre\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>

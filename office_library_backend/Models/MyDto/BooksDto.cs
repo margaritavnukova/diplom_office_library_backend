@@ -9,34 +9,28 @@ using System.Web.UI.WebControls;
 
 namespace office_library_backend.Models.MyDto
 {
-    public class BooksDto
+    public class BooksDto : BaseDto<BooksDto, Book>
     {
-        public int Id { get; set; }
         public string Author { get; set; }
         public string Title { get; set; }
         public string Genre { get; set; }
         public Nullable<System.DateTime> Year { get; set; }
-        public string PhotoBase64 { get; set; }
         public bool IsTaken { get; set; }
         public System.DateTime? DateOfReturning { get; set; }
         public int TakingCount { get; set; }
         public List<UsersDto> Readers { get; set; } = new List<UsersDto>();
+        public string PhotoBase64 { get; set; }
 
         public BooksDto() { }
 
-        public BooksDto(Book book)
+        public BooksDto(Book book) : base(book)
         {
-            Id = book.Id;
             Author = book.Author1.Name;
             Title = book.Title;
             Genre = book.Genre_Dictionary.Name;
             Year = book.Year;
 
-            PhotoBase64 = book.Photo != null
-                ? Convert.ToBase64String(book.Photo)
-                : null;
-
-            DateTime? DateOfTaking = book.UserBookHistory.Count != 0 
+            DateTime? DateOfTaking = book.UserBookHistory.Count != 0
                 ? book.UserBookHistory.OrderBy(b => b.DateTaken).FirstOrDefault().DateTaken
                 : null;
 
@@ -44,7 +38,7 @@ namespace office_library_backend.Models.MyDto
                 ? DateOfTaking.Value.AddDays(30)
                 : DateTime.Today; //костыль
 
-            DateOfReturning = book.UserBookHistory.Count != 0 
+            DateOfReturning = book.UserBookHistory.Count != 0
                 ? book.UserBookHistory.OrderBy(b => b.DateTaken).FirstOrDefault().DateReturned
                 : DateOfTakingFuture;
 
@@ -59,7 +53,7 @@ namespace office_library_backend.Models.MyDto
                 }
         }
 
-        public Book ConvertToBookModel(Entities1 context)
+        public override Book ConvertToModel(Entities1 context)
         {
             // Находим или создаём Author по имени
             var author = context.Author.FirstOrDefault(a => a.Name == this.Author);
@@ -82,7 +76,7 @@ namespace office_library_backend.Models.MyDto
             // Создаём объект Book
             var book = new Book
             {
-                Id = this.Id,
+                Id = Convert.ToInt32(this.Id),
                 Title = this.Title,
                 Author = author.Id,
                 Author1 = author,
@@ -94,6 +88,14 @@ namespace office_library_backend.Models.MyDto
             return book;
         }
 
+        protected override string GetId(Book model)
+        {
+            return model.Id.ToString();
+        }
 
+        protected string GetPhotoBase64(Book model)
+        {
+            return model.Photo != null ? Convert.ToBase64String(model.Photo) : null;
+        }
     }
 }
