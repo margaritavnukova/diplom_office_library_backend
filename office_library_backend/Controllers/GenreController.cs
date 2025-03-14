@@ -11,17 +11,6 @@ namespace office_library_backend.Controllers
 {
     public class GenreController : BaseController<GenresDto, Genre_Dictionary>
     {
-        public GenreController(IBaseRepository<GenresDto, Genre_Dictionary> repo) : base(repo)
-        {  }
-
-        protected override GenresDto ConvertToDto(Genre_Dictionary model)
-        {
-            return new GenresDto(model);
-        }
-
-        protected override Genre_Dictionary ConvertToModel(GenresDto dto)
-        {
-            return dto.ConvertToModel(dbContext);
-        }
+        public GenreController() : base(new GenreRepository()) { }
     }
 }

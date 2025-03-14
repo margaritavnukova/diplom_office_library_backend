@@ -191,6 +191,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AuthorController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\GenreController.cs" />
@@ -227,6 +228,7 @@
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MyDto\AuthorsDto.cs" />
     <Compile Include="Models\MyDto\BaseDto.cs" />
     <Compile Include="Models\MyDto\BooksDto.cs" />
     <Compile Include="Models\MyDto\GenresDto.cs" />
@@ -247,6 +249,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Repositories\AuthorRepository.cs" />
     <Compile Include="Models\Repositories\BaseRepository.cs" />
     <Compile Include="Models\Repositories\BookRepository.cs" />
     <Compile Include="Models\Repositories\IBaseRepository.cs" />
@@ -352,6 +355,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Author\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Book\" />
     <Folder Include="Views\Genre\" />

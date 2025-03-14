@@ -10,17 +10,26 @@ namespace office_library_backend.Models.Repositories
     {
         public override List<GenresDto> Initialize()
         {
-            throw new NotImplementedException();
+            var query = from Genre in db.Genre_Dictionary.ToList() select Genre;
+            var genres = query.ToList();
+
+            List<GenresDto> genresDto = new List<GenresDto>();
+            foreach (var genre in genres)
+            {
+                genresDto.Add(new GenresDto(genre));
+            }
+
+            return genresDto;
         }
 
         protected override string GetId(GenresDto dto)
         {
-            throw new NotImplementedException();
+            return dto.Id;
         }
 
         protected override void UpdateEntity(Genre_Dictionary entity, GenresDto dto)
         {
-            throw new NotImplementedException();
+            entity = dto.ConvertToModel(db);
         }
     }
 }

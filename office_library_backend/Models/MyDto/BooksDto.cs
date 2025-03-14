@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
+using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
 
@@ -51,6 +52,8 @@ namespace office_library_backend.Models.MyDto
                 {
                     Readers.Add(new UsersDto(readerHistory.AspNetUsers));
                 }
+
+            PhotoBase64 = GetPhotoBase64(book);
         }
 
         public override Book ConvertToModel(Entities1 context)
@@ -83,6 +86,7 @@ namespace office_library_backend.Models.MyDto
                 Genre = genre.Id,
                 Genre_Dictionary = genre,
                 Year = this.Year,
+                Photo = Encoding.UTF8.GetBytes(PhotoBase64)
             };
 
             return book;

@@ -9,75 +9,26 @@ using System.Net.Http;
 using System.Net;
 using System.Web;
 using System.Web.Http;
+using System.Text;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
 
 namespace office_library_backend.Controllers
 {
-    public class UserController : ApiController
+    [RoutePrefix("api/User")]
+    public class UserController : BaseController<UsersDto, AspNetUsers>
     {
-        Entities1 dbContext = new Entities1();
-        static readonly IUserRepository repository = new UserRepository();
+        public UserController() : base(new UserRepository()) { }
 
         [HttpGet]
-        [Route("api/User/GetAll")]
-        public string GetAllUsers()
-        {
-            var users = repository.GetAll().Select(user => new UsersDto()
-            {
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                UserName = user.UserName,
-                Role = user.Role,
-                PhotoBase64 = user.PhotoBase64
-            }) ;
-
-            return JsonConvert.SerializeObject(users);
-        }
-
-        [HttpGet]
-        [Route("api/User/{id}")]
-        public UsersDto GetUser(string id)
-        {
-            UsersDto item = repository.Get(id);
-            if (item == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-            return item;
-        }
-
-        [HttpGet]
-        [Route("api/User/GetByEmail/{email}")]
-        public string GetUserByEmail(string email)
+        //[ActionName("GetByEmail")]
+        [Route("GetByEmail/{email}")]
+        public IHttpActionResult GetUserByEmail([FromUri] string email)
         {
             var editedEmail = email.Replace('-', '.');
             var user = repository.GetAll().Where(
                 u => string.Equals(u.Email, editedEmail, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-            return JsonConvert.SerializeObject(user);
-        }
-
-        public HttpResponseMessage PostUser(AspNetUsers user)
-        {
-            if (user.PhoneNumber != null)
-                user = repository.Add(user);
-            var response = Request.CreateResponse<AspNetUsers>(HttpStatusCode.Created, user);
-
-            string uri = Url.Link("DefaultApi", new { id = user.Id });
-            response.Headers.Location = new Uri(uri);
-            return response;
-        }
-
-        public void PutUsers(string id, UsersDto user)
-        {
-            user.Id = id;
-            if (!repository.Update(user))
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-        }
-
-        public void DeleteUser(string id)
-        {
-            repository.Remove(id);
+            return Ok(user);
         }
     }
 }

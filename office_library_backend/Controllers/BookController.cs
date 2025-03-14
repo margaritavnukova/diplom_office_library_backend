@@ -14,30 +14,22 @@ using Newtonsoft.Json;
 
 namespace office_library_backend.Controllers
 {
+    [RoutePrefix("api/Book")]
     public class BookController : BaseController<BooksDto, Book>
     {
         public BookController() : base(new BookRepository()) { }
 
         [HttpGet]
-        [Route("api/Book/GetByReader/{email}")]
-        public string GetBooksByReader([FromUri] string email)
+        //[ActionName("GetByReader")]
+        [Route("GetByReader/{email}")]
+        public IHttpActionResult GetBooksByReader([FromUri] string email)
         {
             var editedEmail = email.Replace('-', '.');
             var books = repository.GetAll().Where(
                 b => b.Readers.Any(
                     reader => reader.Email == editedEmail)
                 );
-            return JsonConvert.SerializeObject(books);
-        }
-
-        protected override BooksDto ConvertToDto(Book model)
-        {
-            return new BooksDto(model);
-        }
-
-        protected override Book ConvertToModel(BooksDto dto)
-        {
-            return dto.ConvertToModel(dbContext);
+            return Ok(books);
         }
     }
 }

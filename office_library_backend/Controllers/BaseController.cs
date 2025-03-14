@@ -4,14 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net;
 using System.Web;
 using System.Web.Http;
 using office_library_backend.Models.Repositories;
+using office_library_backend.Models.MyDto;
+using System.Net;
 
 namespace office_library_backend.Controllers
 {
-    public abstract class BaseController<TDto, TEntity> : ApiController where TEntity : class where TDto : class
+    [RoutePrefix("api/{controller}")]
+    public abstract class BaseController<TDto, TEntity> : ApiController where TEntity : class where TDto : BaseDto<TDto, TEntity>
     {
         protected Entities1 dbContext = new Entities1();
         protected readonly IBaseRepository<TDto, TEntity> repository;
@@ -22,33 +24,36 @@ namespace office_library_backend.Controllers
         }
 
         [HttpGet]
-        [Route("api/[controller]/GetAll")]
-        public string GetAll()
+        //[ActionName("GetAll")]
+        [Route("GetAll")]
+        public IHttpActionResult GetAll()
         {
             var items = repository.GetAll();
-            return JsonConvert.SerializeObject(items);
+            return Ok(items);
         }
 
         [HttpGet]
-        [Route("api/[controller]/{id}")]
-        public string Get(string id)
+        //[ActionName("GetOne")]
+        [Route("GetOne/{id}")]
+        public IHttpActionResult Get([FromUri] string id)
         {
             var item = repository.Get(id);
             if (item == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
-            return JsonConvert.SerializeObject(item);
+            return Ok(item);
         }
 
         [HttpPost]
-        [Route("api/[controller]/Post")]
+        //[ActionName("Post")]
+        [Route("Post")]
         public HttpResponseMessage Post([FromBody] TDto dto)
         {
             if (dto == null)
                 throw new Exception("Deserialize exception");
 
-            TEntity item = ConvertToModel(dto);
+            TEntity item = dto.ConvertToModel(dbContext);
             item = repository.Add(item);
             dbContext.SaveChanges();
             var response = Request.CreateResponse(HttpStatusCode.Created, item);
@@ -56,7 +61,8 @@ namespace office_library_backend.Controllers
         }
 
         [HttpPut]
-        [Route("api/[controller]/Put/{id}")]
+        //[ActionName("Put")]
+        [Route("Put")]
         public void Put(int id, [FromBody] TDto dto)
         {
             if (!repository.Update(dto))
@@ -66,13 +72,11 @@ namespace office_library_backend.Controllers
         }
 
         [HttpDelete]
-        [Route("api/[controller]/Delete/{id}")]
-        public void Delete(string id)
+        //[ActionName("Delete")]
+        [Route("Delete/{id}")]
+        public void Delete([FromBody] string id)
         {
             repository.Remove(id);
         }
-
-        protected abstract TEntity ConvertToModel(TDto dto);
-        protected abstract TDto ConvertToDto(TEntity model);
     }
 }

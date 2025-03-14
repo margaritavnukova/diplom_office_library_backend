@@ -7,7 +7,7 @@ using System.Web;
 
 namespace office_library_backend.Models.Repositories
 {
-    public class UserRepository : BaseRepository< UsersDto, AspNetUsers>, IUserRepository
+    public class UserRepository : BaseRepository< UsersDto, AspNetUsers>, IBaseRepository<UsersDto, AspNetUsers>
     {
         public override List<UsersDto> Initialize()
         {
