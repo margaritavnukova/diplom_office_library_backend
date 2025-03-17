@@ -13,12 +13,12 @@ namespace office_library_backend.Models.Repositories
 
         public abstract List<TDto> Initialize();
 
-        public TEntity Add(TEntity item)
+        public TEntity Add(TEntity item, DbContext dbContext)
         {
             if (item == null)
                 throw new ArgumentNullException();
-            db.Set<TEntity>().Add(item);
-            db.SaveChanges();
+            dbContext.Set<TEntity>().Add(item); // Используем переданный контекст
+            dbContext.SaveChanges();
             return item;
         }
 
@@ -33,7 +33,7 @@ namespace office_library_backend.Models.Repositories
             return Initialize();
         }
 
-        public void Remove(string id)
+        public void Remove<TKey>(TKey id)
         {
             var itemToDelete = db.Set<TEntity>().Find(id);
             if (itemToDelete != null)

@@ -26,6 +26,8 @@ namespace office_library_backend.Models.MyDto
 
         public BooksDto(Book book) : base(book)
         {
+            Id = book.Id.ToString();
+
             Author = book.Author1.Name;
             Title = book.Title;
             Genre = book.Genre_Dictionary.Name;
@@ -86,7 +88,7 @@ namespace office_library_backend.Models.MyDto
                 Genre = genre.Id,
                 Genre_Dictionary = genre,
                 Year = this.Year,
-                Photo = Encoding.UTF8.GetBytes(PhotoBase64)
+                Photo = PhotoBase64 != null ? Encoding.UTF8.GetBytes(PhotoBase64) : null
             };
 
             return book;

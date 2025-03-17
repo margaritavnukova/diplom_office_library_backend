@@ -9,6 +9,7 @@ using System.Web.Http;
 using office_library_backend.Models.Repositories;
 using office_library_backend.Models.MyDto;
 using System.Net;
+using System.Data.Entity;
 
 namespace office_library_backend.Controllers
 {
@@ -54,17 +55,19 @@ namespace office_library_backend.Controllers
                 throw new Exception("Deserialize exception");
 
             TEntity item = dto.ConvertToModel(dbContext);
-            item = repository.Add(item);
+            dbContext.Entry(item).State = EntityState.Detached; // Отсоединяем, если нужно
+            item = repository.Add(item, dbContext); // Передаём контекст в метод Add
             dbContext.SaveChanges();
             var response = Request.CreateResponse(HttpStatusCode.Created, item);
             return response;
         }
 
+
         [HttpPut]
         //[ActionName("Put")]
         [Route("Put")]
-        public void Put(int id, [FromBody] TDto dto)
-        {
+        public void Put([FromBody] TDto dto)
+         {
             if (!repository.Update(dto))
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -73,10 +76,15 @@ namespace office_library_backend.Controllers
 
         [HttpDelete]
         //[ActionName("Delete")]
-        [Route("Delete/{id}")]
+        [Route("Delete")]
         public void Delete([FromBody] string id)
         {
-            repository.Remove(id);
+            if (int.TryParse(id, out int intId))
+            {
+                repository.Remove(intId);
+            }
+            else
+                repository.Remove(id);
         }
     }
 }

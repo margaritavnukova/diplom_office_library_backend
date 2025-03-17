@@ -16,7 +16,8 @@ namespace office_library_backend
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 
             jsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
-            //jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            jsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            //jsonFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Arrays;
 
             // Маршруты Web API
             config.MapHttpAttributeRoutes();

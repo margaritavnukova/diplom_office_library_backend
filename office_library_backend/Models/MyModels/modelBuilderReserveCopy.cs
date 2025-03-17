@@ -1,6 +1,5 @@
-﻿using office_library_backend.Models;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity;
+﻿//      [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+//
 
 //protected override void OnModelCreating(DbModelBuilder modelBuilder)
 //{
