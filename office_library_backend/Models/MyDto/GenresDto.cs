@@ -17,11 +17,11 @@ namespace office_library_backend.Models.MyDto
             Description = genre.Description;
         }
 
-        public override Genre_Dictionary ConvertToModel(Entities1 context)
+        public override Genre_Dictionary ConvertToModel(Entities2 context)
         {
             return new Genre_Dictionary
             {
-                Id = Convert.ToInt32(this.Id),
+                Id = this.Id,
                 Name = this.Name,
                 Description = this.Description
             };
@@ -29,7 +29,7 @@ namespace office_library_backend.Models.MyDto
 
         protected override string GetId(Genre_Dictionary model)
         {
-            return model.Id.ToString();
+            return model.Id;
         }
     }
 }

@@ -4,22 +4,22 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1e9fe25dedf0435d9e7c69a39b257794" Name="Diagram1">
+      <Diagram DiagramId="0e8676d1817e407dbfaaea0f760f2604" Name="Diagram1">
         <EntityTypeShape EntityType="Model.C__MigrationHistory" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.AspNetRoles" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="2.625" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.AspNetUsers" Width="1.5" PointX="3" PointY="2.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Author" Width="1.5" PointX="3.75" PointY="8.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Book" Width="1.5" PointX="6" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Genre_Dictionary" Width="1.5" PointX="3.75" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetUsers" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Author" Width="1.5" PointX="3.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Book" Width="1.5" PointX="6" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Genre_Dictionary" Width="1.5" PointX="3.75" PointY="11.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.UserBookHistory" Width="1.5" PointX="8.25" PointY="3.875" IsExpanded="true" />
         <AssociationConnector Association="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="Model.FK__UserBookH__UserI__5DCAEF64" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK__Book__Author__52593CB8" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK__Book__Genre__534D60F1" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK__UserBookH__BookI__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__Book__Author__14270015" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__Book__Genre__02084FDA" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__UserBookH__BookI__71D1E811" ManuallyRouted="false" />
         <AssociationConnector Association="Model.AspNetUserRoles" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

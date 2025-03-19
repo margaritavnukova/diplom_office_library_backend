@@ -11,8 +11,7 @@ namespace office_library_backend.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public partial class Book
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,11 +19,11 @@ namespace office_library_backend.Models
         {
             this.UserBookHistory = new HashSet<UserBookHistory>();
         }
-
-        public int Id { get; set; }
-        public int Author { get; set; }
+    
+        public string Id { get; set; }
+        public string Author { get; set; }
         public string Title { get; set; }
-        public Nullable<int> Genre { get; set; }
+        public string Genre { get; set; }
         public Nullable<System.DateTime> Year { get; set; }
         public byte[] Photo { get; set; }
     

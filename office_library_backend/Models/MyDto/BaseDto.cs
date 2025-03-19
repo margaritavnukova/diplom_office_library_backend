@@ -16,7 +16,7 @@ namespace office_library_backend.Models.MyDto
             Id = GetId(model);
         }
 
-        public abstract TModel ConvertToModel(Entities1 context);
+        public abstract TModel ConvertToModel(Entities2 context);
         protected abstract string GetId(TModel model);
     }
 }

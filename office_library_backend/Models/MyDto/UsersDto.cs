@@ -33,11 +33,11 @@ namespace office_library_backend.Models.MyDto
                 }
         }
 
-        public override AspNetUsers ConvertToModel(Entities1 context)
+        public override AspNetUsers ConvertToModel(Entities2 context)
         {
             var user = new AspNetUsers
             {
-                Id = this.Id.ToString(),
+                Id = this.Id,
                 Email = this.Email,
                 PhoneNumber = this.PhoneNumber,
                 UserName = this.UserName,

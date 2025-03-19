@@ -16,7 +16,7 @@ namespace office_library_backend.Controllers
     [RoutePrefix("api/{controller}")]
     public abstract class BaseController<TDto, TEntity> : ApiController where TEntity : class where TDto : BaseDto<TDto, TEntity>
     {
-        protected Entities1 dbContext = new Entities1();
+        protected Entities2 dbContext = new Entities2();
         protected readonly IBaseRepository<TDto, TEntity> repository;
 
         public BaseController(IBaseRepository<TDto, TEntity> repo)

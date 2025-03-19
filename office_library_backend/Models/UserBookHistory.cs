@@ -9,13 +9,14 @@
 
 namespace office_library_backend.Models
 {
+    using office_library_backend.Models.MyDto;
     using System;
     using System.Collections.Generic;
     
-    public partial class UserBookHistory
+    public partial class UserBookHistory 
     {
         public string UserId { get; set; }
-        public int BookId { get; set; }
+        public string BookId { get; set; }
         public Nullable<System.DateTime> DateTaken { get; set; }
         public Nullable<System.DateTime> DateReturned { get; set; }
     

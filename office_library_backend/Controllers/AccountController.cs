@@ -27,7 +27,7 @@ namespace office_library_backend.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private Entities1 DefaultDb = new Entities1();
+        private Entities2 DefaultDb = new Entities2();
         public AccountController()
         {
         }

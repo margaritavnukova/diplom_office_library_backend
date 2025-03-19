@@ -9,7 +9,7 @@ namespace office_library_backend.Models.Repositories
 {
     public abstract class BaseRepository<TDto, TEntity> where TDto : class where TEntity : class 
     {
-        protected Entities1 db = new Entities1();
+        protected Entities2 db = new Entities2();
 
         public abstract List<TDto> Initialize();
 

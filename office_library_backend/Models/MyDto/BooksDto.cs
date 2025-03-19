@@ -15,50 +15,55 @@ namespace office_library_backend.Models.MyDto
         public string Author { get; set; }
         public string Title { get; set; }
         public string Genre { get; set; }
-        public Nullable<System.DateTime> Year { get; set; }
+        public DateTime? Year { get; set; }
         public bool IsTaken { get; set; }
-        public System.DateTime? DateOfReturning { get; set; }
+        public DateTime? DateTaken { get; set; }
+        public DateTime? DateReturned { get; set; }
         public int TakingCount { get; set; }
         public List<UsersDto> Readers { get; set; } = new List<UsersDto>();
+        public UsersDto CurrentReader { get; set; }
         public string PhotoBase64 { get; set; }
+
 
         public BooksDto() { }
 
         public BooksDto(Book book) : base(book)
         {
-            Id = book.Id.ToString();
+            Id = book.Id;
 
             Author = book.Author1.Name;
             Title = book.Title;
             Genre = book.Genre_Dictionary.Name;
             Year = book.Year;
 
-            DateTime? DateOfTaking = book.UserBookHistory.Count != 0
+            // Проверяю, есть ли записи в таблице истории книги
+            DateTaken = book.UserBookHistory.Count != 0
                 ? book.UserBookHistory.OrderBy(b => b.DateTaken).FirstOrDefault().DateTaken
                 : null;
 
-            DateTime DateOfTakingFuture = DateOfTaking.HasValue
-                ? DateOfTaking.Value.AddDays(30)
-                : DateTime.Today; //костыль
-
-            DateOfReturning = book.UserBookHistory.Count != 0
+            // Считаю дату возврата книги
+            DateReturned = book.UserBookHistory.Count != 0
                 ? book.UserBookHistory.OrderBy(b => b.DateTaken).FirstOrDefault().DateReturned
-                : DateOfTakingFuture;
+                : null;
 
-            IsTaken = DateOfReturning != null;
+            IsTaken = DateReturned != null;
             TakingCount = book.UserBookHistory.Count();
 
-            var readers = book.UserBookHistory;
+            var readers = book.UserBookHistory.OrderBy(h => h.DateTaken);
             if (readers != null)
                 foreach (var readerHistory in readers)
                 {
                     Readers.Add(new UsersDto(readerHistory.AspNetUsers));
                 }
 
+            CurrentReader = IsTaken 
+                ? Readers.Last() 
+                : null;
+
             PhotoBase64 = GetPhotoBase64(book);
         }
 
-        public override Book ConvertToModel(Entities1 context)
+        public override Book ConvertToModel(Entities2 context)
         {
             // Находим или создаём Author по имени
             var author = context.Author.FirstOrDefault(a => a.Name == this.Author);
@@ -81,7 +86,7 @@ namespace office_library_backend.Models.MyDto
             // Создаём объект Book
             var book = new Book
             {
-                Id = Convert.ToInt32(this.Id),
+                Id = this.Id,
                 Title = this.Title,
                 Author = author.Id,
                 Author1 = author,
@@ -96,7 +101,7 @@ namespace office_library_backend.Models.MyDto
 
         protected override string GetId(Book model)
         {
-            return model.Id.ToString();
+            return model.Id;
         }
 
         protected string GetPhotoBase64(Book model)

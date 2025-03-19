@@ -22,11 +22,11 @@ namespace office_library_backend.Models.MyDto
             PhotoBase64 = GetPhotoBase64(author);
         }
 
-        public override Author ConvertToModel(Entities1 context)
+        public override Author ConvertToModel(Entities2 context)
         {
             return new Author
             {
-                Id = Convert.ToInt32(this.Id),
+                Id = this.Id,
                 Name = this.Name,
                 LifeTime = this.LifeTime,
                 Country = this.Country,
@@ -36,7 +36,7 @@ namespace office_library_backend.Models.MyDto
 
         protected override string GetId(Author model)
         {
-            return model.Id.ToString();
+            return model.Id;
         }
 
         protected string GetPhotoBase64(Author model)

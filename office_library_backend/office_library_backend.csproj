@@ -197,34 +197,50 @@
     <Compile Include="Controllers\GenreController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\UserBookHistoryController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AspNetRoles.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>EntitiesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUserClaims.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>EntitiesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUserLogins.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>EntitiesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUsers.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>EntitiesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Author.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>EntitiesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Book.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>EntitiesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C__MigrationHistory.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>EntitiesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntitiesModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntitiesModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntitiesModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntitiesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntitiesModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntitiesModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Genre_Dictionary.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>EntitiesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -232,31 +248,18 @@
     <Compile Include="Models\MyDto\BaseDto.cs" />
     <Compile Include="Models\MyDto\BooksDto.cs" />
     <Compile Include="Models\MyDto\GenresDto.cs" />
+    <Compile Include="Models\MyDto\UserBookHistoryDto.cs" />
     <Compile Include="Models\MyDto\UsersDto.cs" />
     <Compile Include="Models\MyModels\modelBuilderReserveCopy.cs" />
-    <Compile Include="Models\OfficeLibraryModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OfficeLibraryModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OfficeLibraryModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OfficeLibraryModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\Repositories\AuthorRepository.cs" />
     <Compile Include="Models\Repositories\BaseRepository.cs" />
     <Compile Include="Models\Repositories\BookRepository.cs" />
     <Compile Include="Models\Repositories\IBaseRepository.cs" />
     <Compile Include="Models\Repositories\GenreRepository.cs" />
+    <Compile Include="Models\Repositories\UserBookHistoryRepository.cs" />
     <Compile Include="Models\Repositories\UserRepository.cs" />
     <Compile Include="Models\UserBookHistory.cs">
-      <DependentUpon>OfficeLibraryModel.tt</DependentUpon>
+      <DependentUpon>EntitiesModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -285,15 +288,15 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\OfficeLibraryModel.Context.tt">
+    <Content Include="Models\EntitiesModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
-      <LastGenOutput>OfficeLibraryModel.Context.cs</LastGenOutput>
+      <DependentUpon>EntitiesModel.edmx</DependentUpon>
+      <LastGenOutput>EntitiesModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\OfficeLibraryModel.tt">
+    <Content Include="Models\EntitiesModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
-      <LastGenOutput>OfficeLibraryModel.cs</LastGenOutput>
+      <DependentUpon>EntitiesModel.edmx</DependentUpon>
+      <LastGenOutput>EntitiesModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -301,12 +304,12 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\OfficeLibraryModel.edmx">
+    <EntityDeploy Include="Models\EntitiesModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>OfficeLibraryModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>EntitiesModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\OfficeLibraryModel.edmx.diagram">
-      <DependentUpon>OfficeLibraryModel.edmx</DependentUpon>
+    <Content Include="Models\EntitiesModel.edmx.diagram">
+      <DependentUpon>EntitiesModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -359,6 +362,7 @@
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Book\" />
     <Folder Include="Views\Genre\" />
+    <Folder Include="Views\UserBookHistory\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
