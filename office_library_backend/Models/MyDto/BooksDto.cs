@@ -36,18 +36,21 @@ namespace office_library_backend.Models.MyDto
             Genre = book.Genre_Dictionary.Name;
             Year = book.Year;
 
-            // Проверяю, есть ли записи в таблице истории книги
-            DateTaken = book.UserBookHistory.Count != 0
-                ? book.UserBookHistory.OrderBy(b => b.DateTaken).FirstOrDefault().DateTaken
-                : null;
+            // Получаем последнюю запись о взятии книги (сортировка по убыванию)
+            var lastHistoryRecord = book.UserBookHistory
+                .OrderByDescending(h => h.DateTaken)
+                .FirstOrDefault();
 
-            // Считаю дату возврата книги
-            DateReturned = book.UserBookHistory.Count != 0
-                ? book.UserBookHistory.OrderBy(b => b.DateTaken).FirstOrDefault().DateReturned
-                : null;
+            // Устанавливаем даты
+            DateTaken = lastHistoryRecord?.DateTaken;
+            DateReturned = lastHistoryRecord?.DateReturned;
 
-            IsTaken = DateReturned != null;
-            TakingCount = book.UserBookHistory.Count();
+            // Книга считается взятой, если есть дата взятия и нет даты возврата
+            IsTaken = lastHistoryRecord != null && lastHistoryRecord.DateTaken != null
+                      && lastHistoryRecord.DateReturned == null;
+
+            // Общее количество взятий книги
+            TakingCount = book.UserBookHistory.Count;
 
             var readers = book.UserBookHistory.OrderBy(h => h.DateTaken);
             if (readers != null)
@@ -56,8 +59,8 @@ namespace office_library_backend.Models.MyDto
                     Readers.Add(new UsersDto(readerHistory.AspNetUsers));
                 }
 
-            CurrentReader = IsTaken 
-                ? Readers.Last() 
+            CurrentReader = IsTaken
+                ? Readers.Last()
                 : null;
 
             PhotoBase64 = GetPhotoBase64(book);

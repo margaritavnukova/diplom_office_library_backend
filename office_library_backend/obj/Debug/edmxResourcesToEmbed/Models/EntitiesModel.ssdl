@@ -92,13 +92,21 @@
     <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="Description" Type="nvarchar" MaxLength="150" />
   </EntityType>
-  <!--Ошибки, обнаруженные при создании:
-предупреждение 6002: В таблице или представлении "aspnet-office_library_backend-20250218111328.dbo.UserBookHistory" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
   <EntityType Name="UserBookHistory">
     <Key>
-      <PropertyRef Name="UserId" />
-      <PropertyRef Name="BookId" />
+      <PropertyRef Name="Id" />
     </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
     <Property Name="BookId" Type="nvarchar" MaxLength="128" Nullable="false" />
     <Property Name="DateTaken" Type="datetime" />
@@ -128,7 +136,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__UserBookH__BookI__71D1E811">
+  <Association Name="FK__UserBookH__BookI__3D2915A8">
     <End Role="Book" Type="Self.Book" Multiplicity="1" />
     <End Role="UserBookHistory" Type="Self.UserBookHistory" Multiplicity="*" />
     <ReferentialConstraint>
@@ -140,7 +148,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__UserBookH__UserI__5DCAEF64">
+  <Association Name="FK__UserBookH__UserI__3C34F16F">
     <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
     <End Role="UserBookHistory" Type="Self.UserBookHistory" Multiplicity="*" />
     <ReferentialConstraint>
@@ -218,14 +226,8 @@
     <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Genre_Dictionary" EntityType="Self.Genre_Dictionary" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="UserBookHistory" EntityType="Self.UserBookHistory" store:Type="Tables" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [UserBookHistory].[UserId] AS [UserId], 
-    [UserBookHistory].[BookId] AS [BookId], 
-    [UserBookHistory].[DateTaken] AS [DateTaken], 
-    [UserBookHistory].[DateReturned] AS [DateReturned]
-    FROM [dbo].[UserBookHistory] AS [UserBookHistory]</DefiningQuery>
-    </EntitySet>
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserBookHistory" EntityType="Self.UserBookHistory" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK__Book__Author__14270015" Association="Self.FK__Book__Author__14270015">
       <End Role="Author" EntitySet="Author" />
       <End Role="Book" EntitySet="Book" />
@@ -234,11 +236,11 @@
       <End Role="Genre_Dictionary" EntitySet="Genre_Dictionary" />
       <End Role="Book" EntitySet="Book" />
     </AssociationSet>
-    <AssociationSet Name="FK__UserBookH__BookI__71D1E811" Association="Self.FK__UserBookH__BookI__71D1E811">
+    <AssociationSet Name="FK__UserBookH__BookI__3D2915A8" Association="Self.FK__UserBookH__BookI__3D2915A8">
       <End Role="Book" EntitySet="Book" />
       <End Role="UserBookHistory" EntitySet="UserBookHistory" />
     </AssociationSet>
-    <AssociationSet Name="FK__UserBookH__UserI__5DCAEF64" Association="Self.FK__UserBookH__UserI__5DCAEF64">
+    <AssociationSet Name="FK__UserBookH__UserI__3C34F16F" Association="Self.FK__UserBookH__UserI__3C34F16F">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
       <End Role="UserBookHistory" EntitySet="UserBookHistory" />
     </AssociationSet>

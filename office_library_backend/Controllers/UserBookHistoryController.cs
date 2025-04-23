@@ -21,6 +21,7 @@ namespace office_library_backend.Controllers
         public IHttpActionResult RegisterBookTaking([FromBody] BooksDto bookDto)
         {
             var readerDto = bookDto.CurrentReader;
+            bookDto.IsTaken = !bookDto.DateReturned.HasValue ? false : true;
 
             if (bookDto == null || readerDto == null)
             {
@@ -47,7 +48,7 @@ namespace office_library_backend.Controllers
                 Book = bookDto,
                 Reader = readerDto,
                 DateTaken = DateTime.Today,
-                DateReturned = null
+                DateReturned = null,
             };
 
             try
@@ -63,6 +64,54 @@ namespace office_library_backend.Controllers
                 return InternalServerError(ex);
             }
 
+        }
+
+        [HttpPost]
+        [Route("RegisterBookReturning")]
+        public IHttpActionResult RegisterBookReturning([FromBody] BooksDto bookDto)
+        {
+            var readerDto = bookDto.CurrentReader;
+            bookDto.IsTaken = !bookDto.DateReturned.HasValue ? false : true;
+
+            if (bookDto == null || readerDto == null)
+            {
+                return BadRequest("Книга или читатель не дошли до сервера");
+            }
+
+            if (dbContext.AspNetUsers.FirstOrDefault(a => a.Id == readerDto.Id) == null)
+            {
+                return BadRequest("Читатель не найден!");
+            }
+
+            if (dbContext.Book.FirstOrDefault(a => a.Id == bookDto.Id) == null)
+            {
+                return BadRequest("Книга не найдена!");
+            }
+
+            //Находим активную запись о взятии
+            var activeLoan = dbContext.UserBookHistory
+                .FirstOrDefaultAsync(h =>
+                    h.BookId == bookDto.Id &&
+                    h.UserId == readerDto.Id &&
+                    h.DateReturned == null);
+
+            if (activeLoan == null)
+                return BadRequest("Активный заказ не найден или книга уже возвращена");
+
+            try
+            {
+                UserBookHistory historyEntity = dbContext.UserBookHistory.Where(h => h.UserId == readerDto.Id).Where(h => h.BookId == bookDto.Id).FirstOrDefault();
+
+                historyEntity.DateReturned = DateTime.Today;
+                dbContext.Entry(historyEntity).State = EntityState.Modified;
+                dbContext.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
     }
 }

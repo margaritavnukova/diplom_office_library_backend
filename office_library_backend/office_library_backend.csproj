@@ -258,6 +258,9 @@
     <Compile Include="Models\Repositories\GenreRepository.cs" />
     <Compile Include="Models\Repositories\UserBookHistoryRepository.cs" />
     <Compile Include="Models\Repositories\UserRepository.cs" />
+    <Compile Include="Models\sysdiagrams.cs">
+      <DependentUpon>EntitiesModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\UserBookHistory.cs">
       <DependentUpon>EntitiesModel.tt</DependentUpon>
     </Compile>

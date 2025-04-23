@@ -67,7 +67,7 @@ namespace office_library_backend.Controllers
         //[ActionName("Put")]
         [Route("Put")]
         public void Put([FromBody] TDto dto)
-         {
+        {
             if (!repository.Update(dto))
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);

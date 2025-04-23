@@ -59,8 +59,8 @@
     <Property Name="RegistrationDate" Type="DateTime" Precision="0" />
     <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
     <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-    <NavigationProperty Name="UserBookHistory" Relationship="Self.FK__UserBookH__UserI__5DCAEF64" FromRole="AspNetUsers" ToRole="UserBookHistory" />
     <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+    <NavigationProperty Name="UserBookHistory" Relationship="Model.FK__UserBookH__UserI__3C34F16F" FromRole="AspNetUsers" ToRole="UserBookHistory" />
   </EntityType>
   <EntityType Name="Author">
     <Key>
@@ -85,7 +85,7 @@
     <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
     <NavigationProperty Name="Author1" Relationship="Self.FK__Book__Author__14270015" FromRole="Book" ToRole="Author" />
     <NavigationProperty Name="Genre_Dictionary" Relationship="Self.FK__Book__Genre__02084FDA" FromRole="Book" ToRole="Genre_Dictionary" />
-    <NavigationProperty Name="UserBookHistory" Relationship="Self.FK__UserBookH__BookI__71D1E811" FromRole="Book" ToRole="UserBookHistory" />
+    <NavigationProperty Name="UserBookHistory" Relationship="Model.FK__UserBookH__BookI__3D2915A8" FromRole="Book" ToRole="UserBookHistory" />
   </EntityType>
   <EntityType Name="Genre_Dictionary">
     <Key>
@@ -95,18 +95,6 @@
     <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Book" Relationship="Self.FK__Book__Genre__02084FDA" FromRole="Genre_Dictionary" ToRole="Book" />
-  </EntityType>
-  <EntityType Name="UserBookHistory">
-    <Key>
-      <PropertyRef Name="UserId" />
-      <PropertyRef Name="BookId" />
-    </Key>
-    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="BookId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="DateTaken" Type="DateTime" Precision="3" />
-    <Property Name="DateReturned" Type="DateTime" Precision="3" />
-    <NavigationProperty Name="AspNetUsers" Relationship="Self.FK__UserBookH__UserI__5DCAEF64" FromRole="UserBookHistory" ToRole="AspNetUsers" />
-    <NavigationProperty Name="Book" Relationship="Self.FK__UserBookH__BookI__71D1E811" FromRole="UserBookHistory" ToRole="Book" />
   </EntityType>
   <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
     <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
@@ -136,18 +124,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__UserBookH__UserI__5DCAEF64">
-    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-    <End Role="UserBookHistory" Type="Self.UserBookHistory" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="AspNetUsers">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="UserBookHistory">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK__Book__Author__14270015">
     <End Role="Author" Type="Self.Author" Multiplicity="0..1" />
     <End Role="Book" Type="Self.Book" Multiplicity="*" />
@@ -172,18 +148,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__UserBookH__BookI__71D1E811">
-    <End Role="Book" Type="Self.Book" Multiplicity="1" />
-    <End Role="UserBookHistory" Type="Self.UserBookHistory" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Book">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="UserBookHistory">
-        <PropertyRef Name="BookId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="AspNetUserRoles">
     <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="*" />
     <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
@@ -197,7 +161,6 @@
     <EntitySet Name="Author" EntityType="Self.Author" />
     <EntitySet Name="Book" EntityType="Self.Book" />
     <EntitySet Name="Genre_Dictionary" EntityType="Self.Genre_Dictionary" />
-    <EntitySet Name="UserBookHistory" EntityType="Self.UserBookHistory" />
     <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
       <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -205,10 +168,6 @@
     <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
       <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-    </AssociationSet>
-    <AssociationSet Name="FK__UserBookH__UserI__5DCAEF64" Association="Self.FK__UserBookH__UserI__5DCAEF64">
-      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-      <End Role="UserBookHistory" EntitySet="UserBookHistory" />
     </AssociationSet>
     <AssociationSet Name="FK__Book__Author__14270015" Association="Self.FK__Book__Author__14270015">
       <End Role="Author" EntitySet="Author" />
@@ -218,13 +177,65 @@
       <End Role="Genre_Dictionary" EntitySet="Genre_Dictionary" />
       <End Role="Book" EntitySet="Book" />
     </AssociationSet>
-    <AssociationSet Name="FK__UserBookH__BookI__71D1E811" Association="Self.FK__UserBookH__BookI__71D1E811">
-      <End Role="Book" EntitySet="Book" />
-      <End Role="UserBookHistory" EntitySet="UserBookHistory" />
-    </AssociationSet>
     <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
       <End Role="AspNetRoles" EntitySet="AspNetRoles" />
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
     </AssociationSet>
+    <EntitySet Name="sysdiagrams" EntityType="Model.sysdiagrams" />
+    <EntitySet Name="UserBookHistory" EntityType="Model.UserBookHistory" />
+    <AssociationSet Name="FK__UserBookH__UserI__3C34F16F" Association="Model.FK__UserBookH__UserI__3C34F16F">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="UserBookHistory" EntitySet="UserBookHistory" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserBookH__BookI__3D2915A8" Association="Model.FK__UserBookH__BookI__3D2915A8">
+      <End Role="Book" EntitySet="Book" />
+      <End Role="UserBookHistory" EntitySet="UserBookHistory" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="UserBookHistory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="BookId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="DateTaken" Type="DateTime" Precision="3" />
+    <Property Name="DateReturned" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="AspNetUsers" Relationship="Model.FK__UserBookH__UserI__3C34F16F" FromRole="UserBookHistory" ToRole="AspNetUsers" />
+    <NavigationProperty Name="Book" Relationship="Model.FK__UserBookH__BookI__3D2915A8" FromRole="UserBookHistory" ToRole="Book" />
+  </EntityType>
+  <Association Name="FK__UserBookH__UserI__3C34F16F">
+    <End Type="Model.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+    <End Type="Model.UserBookHistory" Role="UserBookHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserBookHistory">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserBookH__BookI__3D2915A8">
+    <End Type="Model.Book" Role="Book" Multiplicity="1" />
+    <End Type="Model.UserBookHistory" Role="UserBookHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserBookHistory">
+        <PropertyRef Name="BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

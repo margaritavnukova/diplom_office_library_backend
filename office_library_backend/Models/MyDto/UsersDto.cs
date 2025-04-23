@@ -44,9 +44,6 @@ namespace office_library_backend.Models.MyDto
                 Photo = this.PhotoBase64 != null ? Convert.FromBase64String(this.PhotoBase64) : null
             };
 
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            userManager.AddToRole(user.Id, this.Role);
-
             return user;
         }
 
