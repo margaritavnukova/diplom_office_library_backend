@@ -66,12 +66,16 @@ namespace office_library_backend.Controllers
         [HttpPut]
         //[ActionName("Put")]
         [Route("Put")]
-        public void Put([FromBody] TDto dto)
+        public TDto Put([FromBody] TDto dto)
         {
-            if (!repository.Update(dto))
+            TDto dtoResult = repository.Update(dto);
+
+            if (dtoResult == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
+
+            return dtoResult;
         }
 
         [HttpDelete]

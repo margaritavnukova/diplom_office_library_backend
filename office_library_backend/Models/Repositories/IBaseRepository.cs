@@ -12,6 +12,6 @@ namespace office_library_backend.Models.Repositories
         TDto Get(string id);
         TEntity Add(TEntity item, DbContext dbContext);
         void Remove<TKey>(TKey id);
-        bool Update(TDto item);
+        TDto Update(TDto item);
     }
 }

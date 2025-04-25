@@ -27,9 +27,10 @@ namespace office_library_backend.Models.Repositories
             return dto.Id;
         }
 
-        protected override void UpdateEntity(Author entity, AuthorsDto dto)
-        {
-            entity = dto.ConvertToModel(db);
-        }
+        //protected override Author UpdateEntity(Author entity, AuthorsDto dto)
+        //{
+        //    entity = dto.ConvertToModel(db);
+        //    return entity;
+        //}
     }
 }

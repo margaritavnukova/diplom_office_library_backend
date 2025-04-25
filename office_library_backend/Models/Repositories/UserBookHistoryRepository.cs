@@ -18,7 +18,7 @@ namespace office_library_backend.Models.Repositories
             throw new NotImplementedException();
         }
 
-        protected override void UpdateEntity(UserBookHistory entity, UserBookHistoryDto dto)
+        protected override UserBookHistory UpdateEntity(UserBookHistory entity, UserBookHistoryDto dto)
         {
             throw new NotImplementedException();
         }

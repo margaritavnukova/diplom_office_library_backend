@@ -7,7 +7,7 @@ using office_library_backend.Models.MyDto;
 
 namespace office_library_backend.Models.Repositories
 {
-    public abstract class BaseRepository<TDto, TEntity> where TDto : class where TEntity : class 
+    public abstract class BaseRepository<TDto, TEntity> where TDto : BaseDto<TDto, TEntity> where TEntity : class 
     {
         protected Entities2 db = new Entities2();
 
@@ -43,7 +43,7 @@ namespace office_library_backend.Models.Repositories
             }
         }
 
-        public bool Update(TDto dto)
+        public TDto Update(TDto dto)
         {
             if (dto == null)
                 throw new ArgumentNullException();
@@ -51,19 +51,29 @@ namespace office_library_backend.Models.Repositories
             var items = Initialize();
             int index = items.FindIndex(p => GetId(p) == GetId(dto));
             if (index == -1)
-                return false;
+                throw new Exception();
 
             var itemToUpdate = db.Set<TEntity>().Find(GetId(dto));
             if (itemToUpdate == null)
-                return false;
+                throw new Exception();
 
-            UpdateEntity(itemToUpdate, dto);
+            itemToUpdate = UpdateEntity(itemToUpdate, dto);
             db.Entry(itemToUpdate).State = EntityState.Modified;
             db.SaveChanges();
-            return true;
+
+            return dto;
         }
 
         protected abstract string GetId(TDto dto);
-        protected abstract void UpdateEntity(TEntity entity, TDto dto);
+        protected virtual TEntity UpdateEntity(TEntity entity, TDto dto)
+        {
+            // Создаем временную модель из DTO
+            var tempModel = dto.ConvertToModel(db);
+
+            // Копируем все свойства из временной модели в существующую сущность
+            db.Entry(entity).CurrentValues.SetValues(tempModel);
+
+            return entity;
+        }
     }
 }
