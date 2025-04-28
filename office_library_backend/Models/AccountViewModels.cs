@@ -83,6 +83,16 @@ namespace office_library_backend.Models
         [Display(Name = "Подтверждение пароля")]
         [Compare("Password", ErrorMessage = "Пароль и его подтверждение не совпадают.")]
         public string ConfirmPassword { get; set; }
+
+        // Добавляем новые поля
+        [Required]
+        [Phone]
+        [Display(Name = "Номер телефона")]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        [Display(Name = "Роль")]
+        public string Role { get; set; } = "User"; // Значение по умолчанию
     }
 
     public class ResetPasswordViewModel

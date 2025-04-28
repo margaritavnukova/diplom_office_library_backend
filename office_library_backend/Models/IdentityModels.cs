@@ -17,7 +17,7 @@ namespace office_library_backend.Models
             return userIdentity;
         }
 
-        // I addded
+        // I added
         public static void CreateRolesAndUsers()
         {
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext("DefualtConnection")));
