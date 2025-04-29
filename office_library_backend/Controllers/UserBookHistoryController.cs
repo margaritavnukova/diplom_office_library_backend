@@ -21,7 +21,7 @@ namespace office_library_backend.Controllers
         public IHttpActionResult RegisterBookTaking([FromBody] BooksDto bookDto)
         {
             var readerDto = bookDto.CurrentReader;
-            bookDto.IsTaken = !bookDto.DateReturned.HasValue ? false : true;
+            bookDto.IsTaken = !bookDto.PlannedReturnDate.HasValue ? false : true;
 
             if (bookDto == null || readerDto == null)
             {
@@ -48,7 +48,7 @@ namespace office_library_backend.Controllers
                 Book = bookDto,
                 Reader = readerDto,
                 DateTaken = DateTime.Today,
-                DateReturned = null,
+                PlannedReturnDate = DateTime.Today.AddDays(30),
             };
 
             try
@@ -71,7 +71,7 @@ namespace office_library_backend.Controllers
         public IHttpActionResult RegisterBookReturning([FromBody] BooksDto bookDto)
         {
             var readerDto = bookDto.CurrentReader;
-            bookDto.IsTaken = !bookDto.DateReturned.HasValue ? false : true;
+            bookDto.IsTaken = !bookDto.PlannedReturnDate.HasValue ? false : true;
 
             if (bookDto == null || readerDto == null)
             {

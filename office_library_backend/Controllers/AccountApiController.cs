@@ -9,39 +9,48 @@ using Microsoft.AspNet.Identity.Owin;
 using office_library_backend.Models;
 using Microsoft.Owin;
 using Microsoft.AspNet;
+using System.Web;
+using office_library_backend.Models.MyDto;
 
 namespace office_library_backend.Controllers
 {
     [RoutePrefix("api/Account")]
     public class AccountApiController : ApiController
     {
-        private readonly ApplicationUserManager _userManager;
-        private readonly ApplicationSignInManager _signInManager;
-
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+        private Entities2 DefaultDb = new Entities2();
         public AccountApiController()
         {
         }
 
-        public AccountApiController(ApplicationUserManager userManager,
-                                  ApplicationSignInManager signInManager)
+        public AccountApiController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            UserManager = userManager;
+            SignInManager = signInManager;
         }
 
-        private ApplicationSignInManager SignInManager
+        public ApplicationSignInManager SignInManager
         {
             get
             {
                 return _signInManager ?? Request.GetOwinContext().Get<ApplicationSignInManager>();
             }
+            private set
+            {
+                _signInManager = value;
+            }
         }
 
-        private ApplicationUserManager UserManager
+        public ApplicationUserManager UserManager
         {
             get
             {
                 return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
             }
         }
 
@@ -50,6 +59,8 @@ namespace office_library_backend.Controllers
         [AllowAnonymous]
         public async Task<IHttpActionResult> Login(LoginViewModel model)
         {
+            model.RememberMe = true;
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -82,25 +93,27 @@ namespace office_library_backend.Controllers
         [HttpPost]
         [Route("Register")]
         [AllowAnonymous]
-        public async Task<IHttpActionResult> Register(RegisterViewModel model)
+        public async Task<IHttpActionResult> Register([FromBody] UsersDto reader)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            //model.ConfirmPassword = model.Password;
+
+            //if (!ModelState.IsValid)
+            //    return BadRequest(ModelState);
 
             var user = new ApplicationUser
             {
-                UserName = model.UserName,
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber
+                UserName = reader.UserName,
+                Email = reader.Email,
+                PhoneNumber = reader.PhoneNumber
             };
 
-            var result = await UserManager.CreateAsync(user, model.Password);
+            var result = await UserManager.CreateAsync(user, reader.Password);
 
             if (!result.Succeeded)
                 return BadRequest(result.Errors.ToString());
 
             // Назначение роли
-            var roleResult = await UserManager.AddToRoleAsync(user.Id, model.Role);
+            var roleResult = await UserManager.AddToRoleAsync(user.Id, reader.Role);
             if (!roleResult.Succeeded)
                 return InternalServerError();
 

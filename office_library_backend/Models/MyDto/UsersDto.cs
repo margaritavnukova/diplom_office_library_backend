@@ -35,14 +35,20 @@ namespace office_library_backend.Models.MyDto
 
         public override AspNetUsers ConvertToModel(Entities2 context)
         {
-            var user = new AspNetUsers
+            // Получаем существующего пользователя
+            var user = context.AspNetUsers.Find(this.Id) ?? new AspNetUsers();
+
+            // Обновляем только разрешенные поля
+            user.Email = this.Email;
+            user.PhoneNumber = this.PhoneNumber;
+            user.UserName = this.UserName;
+
+            if (this.PhotoBase64 != null)
             {
-                Id = this.Id,
-                Email = this.Email,
-                PhoneNumber = this.PhoneNumber,
-                UserName = this.UserName,
-                Photo = this.PhotoBase64 != null ? Convert.FromBase64String(this.PhotoBase64) : null
-            };
+                user.Photo = Convert.FromBase64String(this.PhotoBase64);
+            }
+
+            // Пароль и другие security-поля остаются нетронутыми
 
             return user;
         }

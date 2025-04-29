@@ -7,55 +7,58 @@ namespace office_library_backend.Models.MyDto
 {
     public class UserBookHistoryDto : BaseDto<UserBookHistoryDto, UserBookHistory>
     {
-        //public string UserId { get; set; }
-        //public string BookId { get; set; }
         public DateTime? DateTaken { get; set; }
-        public DateTime? DateOfReturningFuture { get; set; }
-        public DateTime? DateReturned { get; set; }
-
+        public DateTime? PlannedReturnDate { get; set; }
+        public DateTime? ActualReturnDate { get; set; }
         public UsersDto Reader { get; set; }
         public BooksDto Book { get; set; }
 
-        private static int amountOfDaysToReturnTheBook = 30;
+        // Константа должна быть static readonly
+        private static readonly int AmountOfDaysToReturnTheBook = 30;
 
         public UserBookHistoryDto() { }
 
         public UserBookHistoryDto(UserBookHistory history) : base(history)
         {
+            if (history == null)
+                throw new ArgumentNullException(nameof(history));
+
             DateTaken = history.DateTaken;
-            DateReturned = history.DateReturned;
+            ActualReturnDate = history.DateReturned;
 
-            var Date = DateReturned.HasValue 
-                ? DateReturned.Value 
-                : DateTime.MinValue;
+            // Упрощен расчет PlannedReturnDate
+            PlannedReturnDate = history.DateTaken?.AddDays(AmountOfDaysToReturnTheBook);
 
-            // Считаю дату возврата книги в будущем, если книгу еще не вернули
-            DateOfReturningFuture = DateTaken.HasValue && Book.IsTaken
-                ? DateTaken.Value.AddDays(amountOfDaysToReturnTheBook)
-                : Date;
+            if (history.AspNetUsers != null)
+                Reader = new UsersDto(history.AspNetUsers);
 
-            Reader = new UsersDto(history.AspNetUsers);
-            Book = new BooksDto(history.Book);
+            if (history.Book != null)
+                Book = new BooksDto(history.Book);
         }
 
         public override UserBookHistory ConvertToModel(Entities2 context)
         {
+            if (context == null)
+                throw new ArgumentNullException(nameof(context));
+
+            if (Reader == null)
+                throw new InvalidOperationException("Reader is required");
+
+            if (Book == null)
+                throw new InvalidOperationException("Book is required");
+
             var reader = context.AspNetUsers.FirstOrDefault(a => a.Id == this.Reader.Id);
             if (reader == null)
-            {
-                throw new Exception("Читатель не найден!");
-            }
+                throw new Exception($"Читатель с ID {this.Reader.Id} не найден!");
 
             var book = context.Book.FirstOrDefault(a => a.Id == this.Book.Id);
             if (book == null)
-            {
-                throw new Exception("Книга не найдена!");
-            }
+                throw new Exception($"Книга с ID {this.Book.Id} не найдена!");
 
             return new UserBookHistory
             {
                 DateTaken = this.DateTaken,
-                DateReturned = this.DateReturned,
+                DateReturned = this.ActualReturnDate, // Исправлено с DateReturned на ActualReturnDate
                 UserId = reader.Id,
                 AspNetUsers = reader,
                 BookId = book.Id,
@@ -65,7 +68,13 @@ namespace office_library_backend.Models.MyDto
 
         protected override string GetId(UserBookHistory model)
         {
-            return "";
+            return model?.Id.ToString() ?? string.Empty;
         }
+
+        // Добавлен метод для проверки просрочки
+        public bool IsOverdue =>
+            !ActualReturnDate.HasValue &&
+            PlannedReturnDate.HasValue &&
+            PlannedReturnDate.Value < DateTime.Now;
     }
 }

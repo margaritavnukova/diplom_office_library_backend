@@ -18,50 +18,55 @@ namespace office_library_backend.Models.MyDto
         public DateTime? Year { get; set; }
         public bool IsTaken { get; set; }
         public DateTime? DateTaken { get; set; }
-        public DateTime? DateReturned { get; set; }
+        public DateTime? PlannedReturnDate { get; set; } // Переименовано для ясности
+        public DateTime? ActualReturnDate { get; set; }   // Переименовано для ясности
         public int TakingCount { get; set; }
         public List<UsersDto> Readers { get; set; } = new List<UsersDto>();
         public UsersDto CurrentReader { get; set; }
         public string PhotoBase64 { get; set; }
-
 
         public BooksDto() { }
 
         public BooksDto(Book book) : base(book)
         {
             Id = book.Id;
-
-            Author = book.Author1.Name;
+            Author = book.Author1?.Name;
             Title = book.Title;
-            Genre = book.Genre_Dictionary.Name;
+            Genre = book.Genre_Dictionary?.Name;
             Year = book.Year;
 
-            // Получаем последнюю запись о взятии книги (сортировка по убыванию)
-            var lastHistoryRecord = book.UserBookHistory
+            // Получаем последнюю запись о взятии книги
+            var lastHistoryRecord = book.UserBookHistory?
                 .OrderByDescending(h => h.DateTaken)
                 .FirstOrDefault();
 
             // Устанавливаем даты
             DateTaken = lastHistoryRecord?.DateTaken;
-            DateReturned = lastHistoryRecord?.DateReturned;
+            PlannedReturnDate = lastHistoryRecord?.DateTaken?.AddDays(30); // Рассчитываем ожидаемую дату возврата
+            ActualReturnDate = lastHistoryRecord?.DateReturned;
 
             // Книга считается взятой, если есть дата взятия и нет даты возврата
-            IsTaken = lastHistoryRecord != null && lastHistoryRecord.DateTaken != null
-                      && lastHistoryRecord.DateReturned == null;
+            IsTaken = lastHistoryRecord != null &&
+                     lastHistoryRecord.DateTaken != null &&
+                     lastHistoryRecord.DateReturned == null;
 
             // Общее количество взятий книги
-            TakingCount = book.UserBookHistory.Count;
+            TakingCount = book.UserBookHistory?.Count ?? 0;
 
-            var readers = book.UserBookHistory.OrderBy(h => h.DateTaken);
-            if (readers != null)
-                foreach (var readerHistory in readers)
+            // Заполняем список читателей
+            if (book.UserBookHistory != null)
+            {
+                foreach (var readerHistory in book.UserBookHistory.OrderBy(h => h.DateTaken))
                 {
-                    Readers.Add(new UsersDto(readerHistory.AspNetUsers));
+                    if (readerHistory.AspNetUsers != null)
+                    {
+                        Readers.Add(new UsersDto(readerHistory.AspNetUsers));
+                    }
                 }
+            }
 
-            CurrentReader = IsTaken
-                ? Readers.Last()
-                : null;
+            // Текущий читатель - последний, кто взял книгу и не вернул
+            CurrentReader = IsTaken ? Readers.LastOrDefault() : null;
 
             PhotoBase64 = GetPhotoBase64(book);
         }
@@ -70,20 +75,20 @@ namespace office_library_backend.Models.MyDto
         {
             // Находим или создаём Author по имени
             var author = context.Author.FirstOrDefault(a => a.Name == this.Author);
-            if (author == null)
+            if (author == null && !string.IsNullOrEmpty(this.Author))
             {
                 author = new Author { Name = this.Author };
                 context.Author.Add(author);
-                context.SaveChanges(); // Сохраняем, чтобы получить Id
+                context.SaveChanges();
             }
 
             // Находим или создаём Genre по имени
             var genre = context.Genre_Dictionary.FirstOrDefault(g => g.Name == this.Genre);
-            if (genre == null)
+            if (genre == null && !string.IsNullOrEmpty(this.Genre))
             {
                 genre = new Genre_Dictionary { Name = this.Genre };
                 context.Genre_Dictionary.Add(genre);
-                context.SaveChanges(); // Сохраняем, чтобы получить Id
+                context.SaveChanges();
             }
 
             // Создаём объект Book
@@ -91,13 +96,18 @@ namespace office_library_backend.Models.MyDto
             {
                 Id = this.Id,
                 Title = this.Title,
-                Author = author.Id,
+                Author = author?.Id ?? "", // Добавлена проверка на null
                 Author1 = author,
-                Genre = genre.Id,
+                Genre = genre?.Id ?? "",    // Добавлена проверка на null
                 Genre_Dictionary = genre,
                 Year = this.Year,
-                Photo = PhotoBase64 != null ? Encoding.UTF8.GetBytes(PhotoBase64) : null
+                Photo = !string.IsNullOrEmpty(PhotoBase64) ?
+                       Convert.FromBase64String(PhotoBase64) :
+                       null
             };
+
+            // Не обновляем UserBookHistory здесь, так как это должно делаться отдельно
+            // при операциях взятия/возврата книги
 
             return book;
         }
