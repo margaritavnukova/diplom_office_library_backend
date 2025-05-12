@@ -93,7 +93,6 @@ C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\System.W
 C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\System.Web.WebPages.xml
 C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\System.Web.WebPages.Deployment.xml
 C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\System.Web.WebPages.Razor.xml
-C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\Newtonsoft.Json.xml
 C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\Antlr3.Runtime.pdb
 C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\System.Net.Http.Formatting.xml
 C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\System.Web.Http.xml
@@ -138,3 +137,9 @@ C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\System.N
 C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\System.Threading.Tasks.Extensions.xml
 C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\System.Web.Http.Owin.xml
+C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\nunit.framework.dll
+C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\nunit.framework.legacy.dll
+C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\System.ValueTuple.dll
+C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\nunit.framework.xml
+C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\nunit.framework.legacy.xml
+C:\Users\Vitra\diplom\office_library_backend\office_library_backend\bin\System.ValueTuple.xml

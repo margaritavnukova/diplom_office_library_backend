@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace office_library_backend.Models.MyDto
 {
@@ -10,18 +9,17 @@ namespace office_library_backend.Models.MyDto
         public DateTime? DateTaken { get; set; }
         public DateTime? PlannedReturnDate { get; set; }
         public DateTime? ActualReturnDate { get; set; }
+
         public UsersDto Reader { get; set; }
         public BooksDto Book { get; set; }
 
-        // Константа должна быть static readonly
-        private static readonly int AmountOfDaysToReturnTheBook = 30;
+        private static readonly int AmountOfDaysToReturnTheBook = 30; // Изменено на readonly
 
         public UserBookHistoryDto() { }
 
         public UserBookHistoryDto(UserBookHistory history) : base(history)
         {
-            if (history == null)
-                throw new ArgumentNullException(nameof(history));
+            if (history == null) throw new ArgumentNullException(nameof(history));
 
             DateTaken = history.DateTaken;
             ActualReturnDate = history.DateReturned;
@@ -38,14 +36,9 @@ namespace office_library_backend.Models.MyDto
 
         public override UserBookHistory ConvertToModel(Entities2 context)
         {
-            if (context == null)
-                throw new ArgumentNullException(nameof(context));
-
-            if (Reader == null)
-                throw new InvalidOperationException("Reader is required");
-
-            if (Book == null)
-                throw new InvalidOperationException("Book is required");
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            if (Reader == null) throw new InvalidOperationException("Reader is required");
+            if (Book == null) throw new InvalidOperationException("Book is required");
 
             var reader = context.AspNetUsers.FirstOrDefault(a => a.Id == this.Reader.Id);
             if (reader == null)
