@@ -21,6 +21,7 @@ namespace office_library_backend.Controllers
         public IHttpActionResult RegisterBookTaking([FromBody] BooksDto bookDto)
         {
             var readerDto = bookDto.CurrentReader;
+            //проблема
             bookDto.IsTaken = !bookDto.PlannedReturnDate.HasValue ? false : true;
 
             if (bookDto == null || readerDto == null)
@@ -70,29 +71,36 @@ namespace office_library_backend.Controllers
         [Route("RegisterBookReturning")]
         public IHttpActionResult RegisterBookReturning([FromBody] BooksDto bookDto)
         {
-            var readerDto = bookDto.CurrentReader;
             bookDto.IsTaken = !bookDto.PlannedReturnDate.HasValue ? false : true;
 
-            if (bookDto == null || readerDto == null)
+            if (bookDto == null /*|| readerDto == null*/)
             {
                 return BadRequest("Книга или читатель не дошли до сервера");
             }
 
-            if (dbContext.AspNetUsers.FirstOrDefault(a => a.Id == readerDto.Id) == null)
-            {
-                return BadRequest("Читатель не найден!");
-            }
+            //изменила юзер бук хистори потому что читатель постоянно не доходил до сервера и это просто неудобно
+            //if (dbContext.AspNetUsers.FirstOrDefault(a => a.Id == readerDto.Id) == null)
+            //{
+            //    return BadRequest("Читатель не найден!");
+            //}
 
-            if (dbContext.Book.FirstOrDefault(a => a.Id == bookDto.Id) == null)
+            var book = dbContext.Book.FirstOrDefault(a => a.Id == bookDto.Id);
+
+            if (book == null)
             {
                 return BadRequest("Книга не найдена!");
+            }
+            else
+            {
+                var bookDtoFromDB = new BooksDto(book);
+                bookDto.CurrentReader = bookDtoFromDB.IsTaken ? bookDtoFromDB.Readers.LastOrDefault() : null;
             }
 
             //Находим активную запись о взятии
             var activeLoan = dbContext.UserBookHistory
                 .FirstOrDefaultAsync(h =>
                     h.BookId == bookDto.Id &&
-                    h.UserId == readerDto.Id &&
+                    h.UserId == bookDto.CurrentReader.Id &&
                     h.DateReturned == null);
 
             if (activeLoan == null)
@@ -100,7 +108,7 @@ namespace office_library_backend.Controllers
 
             try
             {
-                UserBookHistory historyEntity = dbContext.UserBookHistory.Where(h => h.UserId == readerDto.Id).Where(h => h.BookId == bookDto.Id).FirstOrDefault();
+                UserBookHistory historyEntity = dbContext.UserBookHistory.Where(h => h.UserId == bookDto.CurrentReader.Id).Where(h => h.BookId == bookDto.Id).FirstOrDefault();
 
                 historyEntity.DateReturned = DateTime.Today;
                 dbContext.Entry(historyEntity).State = EntityState.Modified;
