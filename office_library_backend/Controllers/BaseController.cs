@@ -81,7 +81,7 @@ namespace office_library_backend.Controllers
         [HttpDelete]
         //[ActionName("Delete")]
         [Route("Delete")]
-        public void Delete([FromBody] string id)
+        virtual public IHttpActionResult Delete([FromBody] string id)
         {
             if (int.TryParse(id, out int intId))
             {
@@ -89,6 +89,7 @@ namespace office_library_backend.Controllers
             }
             else
                 repository.Remove(id);
+            return Ok("Успешное удаление");
         }
     }
 }

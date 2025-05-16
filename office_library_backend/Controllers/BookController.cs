@@ -31,5 +31,42 @@ namespace office_library_backend.Controllers
                 );
             return Ok(books);
         }
+
+        [HttpDelete]
+        //[ActionName("Delete")]
+        [Route("Delete")]
+        override public IHttpActionResult Delete([FromBody] string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("ID не может быть пустым");
+            }
+
+            var book = dbContext.Book.FirstOrDefault(a => a.Id == id);
+            if (book == null)
+            {
+                return BadRequest("Книга не найдена!");
+            }
+
+            // Получаем последнюю запись о взятии книги
+            var lastHistoryRecord = book.UserBookHistory?
+                .OrderByDescending(h => h.DateTaken)
+                .FirstOrDefault();
+
+            // Книга считается взятой, если есть дата взятия и нет даты возврата
+            bool IsTaken = lastHistoryRecord != null &&
+                lastHistoryRecord.DateTaken != null &&
+                lastHistoryRecord.DateReturned == null;
+
+            if (IsTaken)
+            {
+                return Conflict();
+            }
+
+            // Удаление по ID
+            repository.Remove(id);
+            
+            return Ok("Книга успешно удалена");
+        }
     }
 }

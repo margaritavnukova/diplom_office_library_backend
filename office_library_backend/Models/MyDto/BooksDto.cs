@@ -47,8 +47,8 @@ namespace office_library_backend.Models.MyDto
 
             // Книга считается взятой, если есть дата взятия и нет даты возврата
             IsTaken = lastHistoryRecord != null &&
-                     lastHistoryRecord.DateTaken != null &&
-                     lastHistoryRecord.DateReturned == null;
+                lastHistoryRecord.DateTaken != null &&
+                lastHistoryRecord.DateReturned == null;
 
             // Общее количество взятий книги
             TakingCount = book.UserBookHistory?.Count ?? 0;

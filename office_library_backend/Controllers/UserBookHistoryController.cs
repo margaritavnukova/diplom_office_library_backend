@@ -21,7 +21,6 @@ namespace office_library_backend.Controllers
         public IHttpActionResult RegisterBookTaking([FromBody] BooksDto bookDto)
         {
             var readerDto = bookDto.CurrentReader;
-            //проблема
             bookDto.IsTaken = !bookDto.PlannedReturnDate.HasValue ? false : true;
 
             if (bookDto == null || readerDto == null)
