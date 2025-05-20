@@ -11,6 +11,8 @@ namespace office_library_backend.Models.MyDto
         public String Name { get; set; }
         public String Description { get; set; }
 
+        public GenresDto() { }
+
         public GenresDto(Genre_Dictionary genre) : base(genre)
         {
             Name = genre.Name;
@@ -19,9 +21,12 @@ namespace office_library_backend.Models.MyDto
 
         public override Genre_Dictionary ConvertToModel(Entities2 context)
         {
+            // Если Id == -1, генерируем новый GUID
+            var newId = this.Id == "-1" ? Guid.NewGuid().ToString() : this.Id;
+            
             return new Genre_Dictionary
             {
-                Id = this.Id,
+                Id = newId,
                 Name = this.Name,
                 Description = this.Description
             };

@@ -26,11 +26,5 @@ namespace office_library_backend.Models.Repositories
         {
             return dto.Id;
         }
-
-        //protected override Genre_Dictionary UpdateEntity(Genre_Dictionary entity, GenresDto dto)
-        //{
-        //    entity = dto.ConvertToModel(db); ;
-        //    return entity;
-        //}
     }
 }

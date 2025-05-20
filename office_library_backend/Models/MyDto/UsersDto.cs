@@ -24,6 +24,7 @@ namespace office_library_backend.Models.MyDto
             Email = user.Email;
             PhoneNumber = user.PhoneNumber;
             UserName = user.UserName;
+            PhotoBase64 = GetPhotoBase64(user); // Добавляем эту строку
 
             var roles = user.AspNetRoles;
             if (roles != null)

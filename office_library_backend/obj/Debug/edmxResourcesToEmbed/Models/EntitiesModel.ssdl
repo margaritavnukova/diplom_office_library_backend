@@ -83,6 +83,7 @@
     <Property Name="Genre" Type="nvarchar" MaxLength="128" />
     <Property Name="Year" Type="datetime" />
     <Property Name="Photo" Type="varbinary(max)" />
+    <Property Name="IsDeleted" Type="bit" />
   </EntityType>
   <EntityType Name="Genre_Dictionary">
     <Key>

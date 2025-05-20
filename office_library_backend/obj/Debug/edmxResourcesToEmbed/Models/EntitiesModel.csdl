@@ -86,6 +86,7 @@
     <NavigationProperty Name="Author1" Relationship="Self.FK__Book__Author__14270015" FromRole="Book" ToRole="Author" />
     <NavigationProperty Name="Genre_Dictionary" Relationship="Self.FK__Book__Genre__02084FDA" FromRole="Book" ToRole="Genre_Dictionary" />
     <NavigationProperty Name="UserBookHistory" Relationship="Model.FK__UserBookH__BookI__3D2915A8" FromRole="Book" ToRole="UserBookHistory" />
+    <Property Name="IsDeleted" Type="Boolean" />
   </EntityType>
   <EntityType Name="Genre_Dictionary">
     <Key>

@@ -66,7 +66,7 @@ namespace office_library_backend.Controllers
         [HttpPut]
         //[ActionName("Put")]
         [Route("Put")]
-        public TDto Put([FromBody] TDto dto)
+        public IHttpActionResult Put([FromBody] TDto dto)
         {
             TDto dtoResult = repository.Update(dto);
 
@@ -75,7 +75,7 @@ namespace office_library_backend.Controllers
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            return dtoResult;
+            return Ok(dtoResult);
         }
 
         [HttpDelete]
@@ -83,13 +83,20 @@ namespace office_library_backend.Controllers
         [Route("Delete")]
         virtual public IHttpActionResult Delete([FromBody] string id)
         {
-            if (int.TryParse(id, out int intId))
+            //if (int.TryParse(id, out int intId))
+            //{
+            //    repository.Remove(intId);
+            //}
+            //else
+            try
             {
-                repository.Remove(intId);
-            }
-            else
                 repository.Remove(id);
-            return Ok("Успешное удаление");
+                return Ok("Успешное удаление");
+            }
+            catch
+            {
+                throw new Exception();
+            }
         }
     }
 }

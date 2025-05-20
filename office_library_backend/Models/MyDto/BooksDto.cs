@@ -12,14 +12,17 @@ namespace office_library_backend.Models.MyDto
 {
     public class BooksDto : BaseDto<BooksDto, Book>
     {
-        public string Author { get; set; }
+        public AuthorsDto Author { get; set; }
         public string Title { get; set; }
-        public string Genre { get; set; }
+        public GenresDto Genre { get; set; }
+        public bool? IsDeleted { get; set; }
+
         public DateTime? Year { get; set; }
         public bool IsTaken { get; set; }
         public DateTime? DateTaken { get; set; }
-        public DateTime? PlannedReturnDate { get; set; } // Переименовано для ясности
-        public DateTime? ActualReturnDate { get; set; }   // Переименовано для ясности
+        public DateTime? PlannedReturnDate { get; set; } 
+        public DateTime? ActualReturnDate { get; set; }   
+
         public int TakingCount { get; set; }
         public List<UsersDto> Readers { get; set; } = new List<UsersDto>();
         public UsersDto CurrentReader { get; set; }
@@ -30,9 +33,10 @@ namespace office_library_backend.Models.MyDto
         public BooksDto(Book book) : base(book)
         {
             Id = book.Id;
-            Author = book.Author1?.Name;
+            Author = new AuthorsDto(book.Author1);
             Title = book.Title;
-            Genre = book.Genre_Dictionary?.Name;
+            Genre = new GenresDto(book.Genre_Dictionary);
+            IsDeleted = book.IsDeleted;
             Year = book.Year;
 
             // Получаем последнюю запись о взятии книги
@@ -73,20 +77,23 @@ namespace office_library_backend.Models.MyDto
 
         public override Book ConvertToModel(Entities2 context)
         {
+            // Если Id == -1, генерируем новый GUID
+            var newId = this.Id == "-1" ? Guid.NewGuid().ToString() : this.Id;
+
             // Находим или создаём Author по имени
-            var author = context.Author.FirstOrDefault(a => a.Name == this.Author);
-            if (author == null && !string.IsNullOrEmpty(this.Author))
+            var author = context.Author.FirstOrDefault(a => a.Id == this.Author.Id);
+            if (author == null && !string.IsNullOrEmpty(this.Author.Name))
             {
-                author = new Author { Name = this.Author };
+                author = this.Author.ConvertToModel(context);
                 context.Author.Add(author);
                 context.SaveChanges();
             }
 
             // Находим или создаём Genre по имени
-            var genre = context.Genre_Dictionary.FirstOrDefault(g => g.Name == this.Genre);
-            if (genre == null && !string.IsNullOrEmpty(this.Genre))
+            var genre = context.Genre_Dictionary.FirstOrDefault(g => g.Id == this.Genre.Id);
+            if (genre == null && !string.IsNullOrEmpty(this.Genre.Name))
             {
-                genre = new Genre_Dictionary { Name = this.Genre };
+                genre = this.Genre.ConvertToModel(context);
                 context.Genre_Dictionary.Add(genre);
                 context.SaveChanges();
             }
@@ -94,20 +101,18 @@ namespace office_library_backend.Models.MyDto
             // Создаём объект Book
             var book = new Book
             {
-                Id = this.Id,
+                Id = newId,
                 Title = this.Title,
                 Author = author?.Id ?? "", // Добавлена проверка на null
                 Author1 = author,
                 Genre = genre?.Id ?? "",    // Добавлена проверка на null
                 Genre_Dictionary = genre,
+                IsDeleted = this.IsDeleted,
                 Year = this.Year,
                 Photo = !string.IsNullOrEmpty(PhotoBase64) ?
                        Convert.FromBase64String(PhotoBase64) :
                        null
             };
-
-            // Не обновляем UserBookHistory здесь, так как это должно делаться отдельно
-            // при операциях взятия/возврата книги
 
             return book;
         }

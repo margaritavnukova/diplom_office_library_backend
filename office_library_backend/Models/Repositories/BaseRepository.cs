@@ -17,6 +17,7 @@ namespace office_library_backend.Models.Repositories
         {
             if (item == null)
                 throw new ArgumentNullException();
+
             dbContext.Set<TEntity>().Add(item); // Используем переданный контекст
             dbContext.SaveChanges();
             return item;

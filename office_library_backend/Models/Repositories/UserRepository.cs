@@ -27,11 +27,5 @@ namespace office_library_backend.Models.Repositories
         {
             return dto.Id; 
         }
-
-        //protected override AspNetUsers UpdateEntity(AspNetUsers entity, UsersDto dto)
-        //{
-        //    entity = dto.ConvertToModel(db);
-        //    return entity;
-        //}
     }
 }

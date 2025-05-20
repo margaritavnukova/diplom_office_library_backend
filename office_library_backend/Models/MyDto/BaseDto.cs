@@ -7,7 +7,7 @@ namespace office_library_backend.Models.MyDto
 {
     public abstract class BaseDto<TDto, TModel> where TDto : class where TModel : class 
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = "-1"; // Дефолтное значение
 
         public BaseDto() { }
 

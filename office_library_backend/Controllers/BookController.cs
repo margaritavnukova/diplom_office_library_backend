@@ -53,20 +53,57 @@ namespace office_library_backend.Controllers
                 .OrderByDescending(h => h.DateTaken)
                 .FirstOrDefault();
 
+            bool hasHistory = lastHistoryRecord != null;
+
             // Книга считается взятой, если есть дата взятия и нет даты возврата
-            bool IsTaken = lastHistoryRecord != null &&
+            bool isTaken = lastHistoryRecord != null &&
                 lastHistoryRecord.DateTaken != null &&
                 lastHistoryRecord.DateReturned == null;
 
-            if (IsTaken)
+            if (hasHistory)
+            {
+                // Мягкое удаление (если есть история)
+                book.IsDeleted = true;
+                dbContext.SaveChanges();
+
+                return Ok("Книга перемещена в архив (есть история выдачи)");
+            }
+            else if (!isTaken)
+            {
+                // Полное удаление (нет истории)
+                repository.Remove(id);
+                return Ok("Книга полностью удалена (без истории)");
+            }
+            else
             {
                 return Conflict();
             }
+        }
 
-            // Удаление по ID
-            repository.Remove(id);
-            
-            return Ok("Книга успешно удалена");
+        [HttpGet]
+        [Route("Search")]
+        public IHttpActionResult SearchBooks([FromBody] string title)
+        {
+            try
+            {
+                // Если строка поиска пустая - возвращаем все книги
+                if (string.IsNullOrWhiteSpace(title))
+                {
+                    var allBooks = dbContext.Book.ToList();
+                    return Ok(allBooks);
+                }
+
+                // Ищем книги, содержащие указанную строку в названии (без учета регистра)
+                var foundBooks = dbContext.Book
+                    .Where(b => b.Title.ToLower().Contains(title.ToLower()))
+                    .ToList();
+
+                return Ok(foundBooks);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
     }
 }

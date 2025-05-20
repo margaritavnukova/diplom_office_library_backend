@@ -10,9 +10,11 @@ namespace office_library_backend.Models.MyDto
     public class AuthorsDto : BaseDto<AuthorsDto, Author>
     {
         public string Name { get; set; }
-        public string LifeTime { get; set; }
-        public string Country { get; set; }
+        public string LifeTime { get; set; } = "";
+        public string Country { get; set; } = "";
         public string PhotoBase64 { get; set; }
+
+        public AuthorsDto() { }
 
         public AuthorsDto(Author author) : base(author)
         {
@@ -24,13 +26,18 @@ namespace office_library_backend.Models.MyDto
 
         public override Author ConvertToModel(Entities2 context)
         {
+            // Если Id == -1, генерируем новый GUID
+            var newId = this.Id == "-1" ? Guid.NewGuid().ToString() : this.Id;
+            
             return new Author
             {
-                Id = this.Id,
+                Id = newId,
                 Name = this.Name,
                 LifeTime = this.LifeTime,
                 Country = this.Country,
-                Photo = Encoding.UTF8.GetBytes(this.PhotoBase64),
+                Photo = this.PhotoBase64 != null
+                    ? Encoding.UTF8.GetBytes(this.PhotoBase64)
+                    : null
             };
         }
 

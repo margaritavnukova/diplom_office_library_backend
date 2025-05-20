@@ -26,6 +26,7 @@ namespace office_library_backend.Models
         public string Genre { get; set; }
         public Nullable<System.DateTime> Year { get; set; }
         public byte[] Photo { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
     
         public virtual Author Author1 { get; set; }
         public virtual Genre_Dictionary Genre_Dictionary { get; set; }
