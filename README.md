@@ -52,30 +52,37 @@
 <p align="center">
  <img width="$(window).width() / 2" src="/images/uml1.png" alt="qr"/>
 </p>
+
 #### Диаграмма последовательности
 <p align="center">
  <img width="$(window).width() / 2" src="/images/uml2.png" alt="qr"/>
 </p>
+
 #### Диаграмма 1
 <p align="center">
  <img width="$(window).width() / 2" src="/images/uml3.png" alt="qr"/>
 </p>
+
 #### Диаграмма 2
 <p align="center">
- <img width="$(window).width() / 2" src=/images/uml4.png" alt="qr"/>
+ <img width="$(window).width() / 2" src="/images/uml4.png" alt="qr"/>
 </p>
+
 #### ER-модель
 <p align="center">
  <img width="$(window).width() / 2" src="/images/er.png" alt="qr"/>
 </p>
+
 #### Диаграмма репозиториев сервера
 <p align="center">
  <img width="$(window).width() / 2" src="/images/repo.png" alt="qr"/>
 </p>
+
 #### Диаграмма DTO-классов сервера
 <p align="center">
  <img width="$(window).width() / 2" src="/images/dtoq.png" alt="qr"/>
 </p>
+
 #### Диаграмма DTO-классов клиента
 <p align="center">
  <img width="$(window).width() / 2" src="/images/dto2.png" alt="qr"/>
