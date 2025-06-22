@@ -87,7 +87,7 @@
 #### Модульное
 Для некоторых функций сервера было проведено модульное тестирование.
 <p align="center">
- <img width="200px" src="https://github.com/margaritavnukova/diplom_office_library_backend/blob/main/images/photo_2025-05-14_17-41-34.jpg" alt="qr"/>
+ <img width="$(window).width() / 2" src="https://github.com/margaritavnukova/diplom_office_library_backend/blob/main/images/photo_2025-05-14_17-41-34.jpg" alt="qr"/>
 </p>
  
 #### Postman
