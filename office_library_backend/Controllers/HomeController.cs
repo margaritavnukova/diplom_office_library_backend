@@ -26,5 +26,10 @@ namespace office_library_backend.Controllers
 
             return View();
         }
+
+        public ActionResult Error()
+        {
+            return View(); // Будет искать Views/Home/Error.cshtml
+        }
     }
 }
